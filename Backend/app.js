@@ -6,7 +6,7 @@ const adminURL = '/API/v1/admin';
 const app = express();
 const cors = require('cors');
 
-app.use(cors());
+app.use(cors({origin:true,credentials: true}));
 
 const db = mysql.createConnection({
     host: "localhost",
