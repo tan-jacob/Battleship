@@ -16,7 +16,7 @@
             <div class="grid grid-board-opponent"></div>
             
         </div>
-
+        <button id='rotate'>Rotate your ships</button>
 
         <div class="grid-board-ships">
             <div class="ship destroyer-container" draggable="true">
@@ -53,8 +53,20 @@
 
         </div>
 
+            
+        <div id = "chatDiv">
+            <p id = "chat"></p>
+
+        </br>
+        <form name="sendMsg" action="">
+            <input name="msg" type = "text" id ="msg">
+            <button class="btn btn-success" type="button" onclick="post()">Enter</button>
+        </form>
+
         
+        </div>
 
     </body>
+
 
 </html>
