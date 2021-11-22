@@ -31,7 +31,7 @@ app.get(`${resource}/user/:userid`, function(req, res) {
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
         //console.log(`${sqlres}`);
-        res.send(JSON.stringify(sqlres));
+        res.status(200).send(JSON.stringify(sqlres));
     });
 });
 
