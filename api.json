@@ -18,19 +18,11 @@
   "tags": [
     {
       "name": "user",
-      "description": "Operations about user",
-      "externalDocs": {
-        "description": "Find out more about our store",
-        "url": "http://swagger.io"
-      }
+      "description": "Operations about user"
     },
     {
       "name": "admin",
-      "description": "Messages from user",
-      "externalDocs": {
-        "description": "Messages sent from users",
-        "url": "http://swagger.io"
-      }
+      "description": "Requests on admin page"
     }
   ],
   "schemes": [

@@ -12,13 +12,6 @@ const db = mysql.createConnection({
     database: 'battleship',
 });
 
-db.connect((err) => {
-    if (err) throw err;
-    console.log("Connected!");
-});
-
-app.use(express.json());
-
 app.use(function (req, res, next){
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
