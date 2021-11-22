@@ -1,6 +1,6 @@
 const express = require('express');
 const mysql = require('mysql');
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 9000;
 const resource = '/API/v1';
 const adminURL = '/API/v1/admin';
 const app = express();
