@@ -6,8 +6,6 @@ const adminURL = '/API/v1/admin';
 const app = express();
 const cors = require('cors');
 
-app.use(cors({origin:true,credentials: true}));
-
 const db = mysql.createConnection({
     host: "localhost",
     user: "lab",
@@ -23,11 +21,13 @@ db.connect((err) => {
 app.use(express.json());
 
 app.use(function (req, res, next){
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'https://battleship-ko7ii.ondigitalocean.app');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
+
+
 
 let counterGetUserID = 0;
 app.get(`${resource}/user/:userid`, function(req, res) {
