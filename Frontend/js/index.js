@@ -18,12 +18,13 @@ function getUser() {
 
     let url = `https://inyoungkang.me/api/v1/user/` + userid;
     console.log(url);
-    axios.get(url, {
-        method: 'get',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then((res) => {
+    axios.get(url
+        // , {
+        // method: 'get',
+        // headers: {
+        //     'Content-Type': 'application/json'
+        // }
+    ).then((res) => {
         //let response = JSON.parse(res);
         document.getElementById('user').innerHTML = "name: " + res.data[0].name;
         console.log(res.data[0]);
