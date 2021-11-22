@@ -8,9 +8,9 @@ const http = require('http');
 
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'admin',
-    password: 'password1234abcd',
-    database: 'chatroom',
+    user: 'root',
+    password: '',
+    database: 'battleship',
 });
 
 db.connect((err) => {
@@ -25,38 +25,36 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.post(resource, (req, res) => {
-    let body = "";
-    req.on('data', function (chunk) {
-        if (chunk != null) {
-            body += chunk;
+app.get('/user/:userid', function(req, res) {
+    let userid = req.params.userid;
+    console.log(userid);
+
+    let sql = `SELECT * FROM users WHERE userid=${userid}`;
+    db.query(sql, function(sqlerr, sqlres) {
+        if (sqlerr) throw sqlerr;
+        console.log(`${sqlres.name}`);
+        res.send(JSON.stringify(sqlres));
+    });
+});
+
+app.post('/user', function(req, res) {
+    let username = req.body.username;
+    let password = req.body.password;
+    let name = req.body.name;
+
+    let sql = `INSERT INTO users(username, password, name) values(${username}, ${password}, ${name})`;
+    db.query(sql, function(err, res) {
+        if (Err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+        res.status(201).send(JSON.stringify(res));
         }
+        console.log("1 record inserted");
     });
+})
 
-    req.on('end', () => {
-        let values = JSON.parse(body);
-        console.log(values);
-        let sql = `INSERT INTO chatlog(name, message) values ('${values.name}', ${values.msg})`;
-        db.query(sql, (Sqlerr, result) => {
-            if (Sqlerr) {
-                throw Sqlerr;
-            };
-            res.status(200).send(`${values.name}:${values.msg} was stored in DB`);
-        });
-    });
-});
-
-app.get(resource, (req, res) => {
-    let sql = `SELECT * FROM chatlog`;
-    db.query(sql, (err, result) => {
-        if (err) throw err;
-        res.status(200).send(`${JSON.stringify(result)}`);
-    });
-});
-
-var server = http.createServer(options, app);
-
-server.listen(PORT, (err) => {
-    if (err) throw err;
+app.listen(PORT, () => {
     console.log("Listening to port", PORT);
-});
+})
+
