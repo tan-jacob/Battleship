@@ -1,7 +1,7 @@
 function postUser() {
     let testdiv = document.getElementById('testdiv');
 
-    let url = 'https://inyoungkang.me/api/v1/user';
+    let url = 'https://inyoungkang.me/api/v1/user/';
 
     axios.post(url, {
         name: "jane doe",
@@ -45,7 +45,7 @@ function login() {
 }
 
 function getData() {
-    let url = 'https://inyoungkang.me/api/v1/admin';
+    let url = 'https://inyoungkang.me/api/v1/admin/';
     axios.get(url, {
         method: 'get',
         headers: {
