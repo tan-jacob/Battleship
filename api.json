@@ -25,7 +25,7 @@
       }
     },
     {
-      "name": "messages",
+      "name": "admin",
       "description": "Messages from user",
       "externalDocs": {
         "description": "Messages sent from users",
@@ -245,13 +245,13 @@
         }
       }
     },
-    "/messages": {
-      "post": {
+    "/admin": {
+      "get": {
         "tags": [
-          "user"
+          "admin"
         ],
-        "summary": "Create user",
-        "description": "This can only be done by the logged in user.",
+        "summary": "gets all endpoint request counts",
+        "description": "This can only be done by the logged in admin.",
         "operationId": "createUser",
         "produces": [
           "application/xml",
@@ -261,10 +261,10 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Created user object",
+            "description": "Get request counts",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/Admin"
             }
           }
         ],
@@ -318,6 +318,19 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "Admin": {
+      "type": "object",
+      "properties": {
+        "get": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "post": {
+          "type": "integer",
+          "format": "int64"
         }
       }
     },
