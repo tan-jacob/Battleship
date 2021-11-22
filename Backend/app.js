@@ -1,7 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
-const PORT = process.env.PORT || 8000;
-const resource = '/API/v1/chatlog';
+const PORT = process.env.PORT || 3306;
+const resource = '/API/v1';
+const adminURL = '/API/v1/admin';
 const app = express();
 const fs = require('fs');
 const http = require('http');
@@ -25,7 +26,9 @@ app.use(function(req, res, next) {
     next();
 });
 
+let counterGetUserID = 0;
 app.get('/user/:userid', function(req, res) {
+    counterGetUserID++;
     let userid = req.params.userid;
     console.log(userid);
 
@@ -37,18 +40,29 @@ app.get('/user/:userid', function(req, res) {
     });
 });
 
+//get all counters to be viewed in the admin.html page
+app.get( adminURL, function(req, res) {
+    res.send({
+        counterGetUserID,
+        counterPostUser
+    });
+    
+});
+
+let counterPostUser = 0;
 app.post('/user', function(req, res) {
+    counterPostUser++;
     let username = req.body.username;
     let password = req.body.password;
     let name = req.body.name;
 
     let sql = `INSERT INTO users(username, password, name) values(${username}, ${password}, ${name})`;
     db.query(sql, function(err, res) {
-        if (Err) {
+        if (err) {
             res.status(404).send("Error: " + err.message);
             throw err;
         } else {
-        res.status(201).send(JSON.stringify(res));
+        res.status(201).send(JSON.stringify({res: res, requestCount: counterPostUser}));
         }
         console.log("1 record inserted");
     });

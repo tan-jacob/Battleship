@@ -3,9 +3,59 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin</title>
 </head>
 <body>
     <h2>Admin Page</h2>
+
+    <div>
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Request</th>
+            </tr>
+
+            <tr>
+                <td>GET</td>
+                <td>/API/v1/user/:userid</td>
+                <td id='counterGetUser'></td>
+            </tr>
+
+            <tr>
+                <td>PUT</td>
+                <td>/API/v1/user</td>
+                <td id='counterPostUser'></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+
+
 </body>
 </html>
+
+<script>
+    const xhttp = new XMLHttpRequest();
+    const endPointRoot = "http://localhost:8888/api/v1/";
+    const resource = "admin"
+    function getData() {
+        const url = endPointRoot + resource;
+        xhttp.open("GET", url , true);
+        xhttp.send();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 & this.status == 200) {
+                const obj = this.response;
+                console.log(obj);
+                document.getElementById('counterGetUser').innerHTML = obj.counterGetUserID;
+                document.getElementById('counterPostUser').innerHTML = obj.counterPostUser;
+
+            }
+        }
+       
+    };
+
+    window.onload = getData;
+</script>
