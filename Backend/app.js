@@ -1,8 +1,8 @@
 const express = require('express');
 const mysql = require('mysql');
 const PORT = process.env.PORT || 9000;
-const resource = '/API/v1';
-const adminURL = '/API/v1/admin';
+const resource = '/api/v1';
+const adminURL = '/api/v1/admin';
 const app = express();
 
 const db = mysql.createConnection({
