@@ -9,7 +9,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "lab",
     password: "ISATeamD5",
-    database: 'battleship',
+    database: 'Battleship',
 });
 
 app.use(function (req, res, next){
