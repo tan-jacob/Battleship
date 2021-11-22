@@ -8,9 +8,9 @@ const fs = require('fs');
 const http = require('http');
 
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
+    host: "localhost",
+    user: "lab",
+    password: "ISATeamD5",
     database: 'battleship',
 });
 
