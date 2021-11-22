@@ -35,7 +35,7 @@ app.get('/user/:userid', function(req, res) {
     let sql = `SELECT * FROM users WHERE userid=${userid}`;
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
-        console.log(`${sqlres.name}`);
+        //console.log(`${sqlres}`);
         res.send(JSON.stringify(sqlres));
     });
 });
@@ -51,22 +51,42 @@ app.get( adminURL, function(req, res) {
 
 let counterPostUser = 0;
 app.post('/user', function(req, res) {
-    counterPostUser++;
-    let username = req.body.username;
-    let password = req.body.password;
-    let name = req.body.name;
+        counterPostUser++;
 
-    let sql = `INSERT INTO users(username, password, name) values(${username}, ${password}, ${name})`;
-    db.query(sql, function(err, res) {
-        if (err) {
-            res.status(404).send("Error: " + err.message);
-            throw err;
-        } else {
-        res.status(201).send(JSON.stringify({res: res, requestCount: counterPostUser}));
-        }
-        console.log("1 record inserted");
-    });
+        let body = "";
+        req.on('data', function (chunk) {
+            if (chunk != null) {
+                body += chunk;
+            }
+        });
+
+        req.on('end', () => {
+            let values = JSON.parse(body);
+            console.log(values);
+            let username = values.username;
+            let password = values.password;
+            let name = values.name;
+
+            // let newUser = {
+            //     DBusername = username,
+            //     DBpassword = password,
+            //     DBname = name
+            // };
+
+            let sql = `INSERT INTO users(username, password, name) values(${username}, ${password}, ${name})`;
+            db.query(sql, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                    throw err;
+                } else {
+                    res.status(201).send(JSON.stringify(newUser));
+                }
+                console.log("1 record inserted");
+            })
+        });      
 })
+
+
 
 app.listen(PORT, () => {
     console.log("Listening to port", PORT);
