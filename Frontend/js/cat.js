@@ -9,8 +9,8 @@ const catURL = '/api/v1/cat';
 let catImgDiv = document.getElementById("catPic");
 let commentDiv = document.getElementById("catComments")
 //UserName : Comments
-let getOneCat = async (id) =>  {
-    id = 5;
+let getOneCat = async () =>  {
+    let id = req.params.id;
     const response = await axios.get(localEndPointRoot + catURL + "/" + id);
     console.log(response.data);
     catImgDiv.src = response.data[0].url;
