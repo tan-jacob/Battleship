@@ -3,7 +3,7 @@ const GET = 'GET';
 const POST = 'POST';
 const endPointRoot = 'hostedip';
 const localEndPointRoot = 'http://localhost:8888'
-const catAPI = 'https://thatcopy.pw/catapi/rest/';
+const catAPI = 'https://thatcopy.pw/catapi/restId/';
 const catURL = '/api/v1/cat';
 
 let catImgDiv = document.getElementById("catPic");
@@ -15,8 +15,10 @@ const id = urlParams.get('id')
 //UserName : Comments
 let getOneCat = async () =>  {
     const response = await axios.get(localEndPointRoot + catURL + "/" + id);
+    const response2 = await axios.get(catAPI + id);
+
     console.log(response.data);
-    catImgDiv.src = response.data[0].url;
+    catImgDiv.src = response2.data.webpurl;
 
     let comments = response.data;
     console.log(comments);
