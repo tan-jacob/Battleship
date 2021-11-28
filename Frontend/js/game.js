@@ -26,6 +26,6 @@ let getCat = async() => {
 
 let vote = (num) => {
     console.log("vote for cat", num);
+    const response = await axios.put(localEndPointRoot + '/vote/' + num);
     getCat()
-    
 }
