@@ -81,14 +81,15 @@ app.get(catURL, async function(req, res) {
     res.status(200).send(JSON.stringify(data));
 })
 
+//Get cat info by id
 app.get(catURL + '/:pictureid', function(req, res) {
-    let sql = 'SELECT * FROM comment AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.pictureID=u.pictureID';
+    let sql = 'SELECT * FROM comments AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.userID=u.userID;'
+            + ` WHERE c.pictureID=${req.params.pictureid}`;
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
         //console.log(`${sqlres}`);
         res.status(200).send(JSON.stringify(sqlres));
     });
-
 })
 
 let counterPostUser = 0;
@@ -204,6 +205,7 @@ app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
     });
 });
 
+//vote for cat by id
 app.put(`/vote/:pictureid`, jsonParser, function(req, res) {
     let sql = `UPDATE votes SET votes = votes + 1 WHERE pictureid = ${req.params.pictureid}`
 
