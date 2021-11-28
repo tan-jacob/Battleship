@@ -23,5 +23,5 @@ let getOneCat = async (id) =>  {
 }
 
 let postComment = async (id) => {
-    
+
 }
