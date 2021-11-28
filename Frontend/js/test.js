@@ -21,6 +21,26 @@ function post() {
       });
 }
 
+function put() {
+    let testdiv = document.getElementById('res');
+
+    let comID = document.getElementById('comid').value;
+    let com = document.getElementById('comment').value;
+
+    console.log("comid: " + comID + " com: " + com); 
+
+    let url = `http://localhost:9000/comments/${cID}`;
+
+    axios.put(url, {
+        comment: com
+    }).then(res => {
+        let response = JSON.parse(res);
+        testdiv.innerHTML = response;
+    }).catch(function(error) {
+        console.log(error);
+      });
+}
+
 function get() {
     let testdiv = document.getElementById('res');
 

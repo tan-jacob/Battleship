@@ -7,7 +7,6 @@ const adminURL = '/api/v1/admin';
 const bodyParser = require('body-parser')
 const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
-const axios = require('axios');
 const app = express();
 
 const db = mysql.createConnection({
@@ -136,6 +135,28 @@ app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
         console.log("1 record inserted");
     });
 });
+
+app.put(`/comments/:commentid/`, jsonParser, function(req, res) {
+    console.log(req.body);
+    console.log(req.params);
+
+    let newComment = {
+        commentID: req.params.commentID,
+        comment: req.body.comment
+    }
+
+    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentID}`;
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            res.status(201).send(JSON.stringify(newComment));
+        }
+        console.log("1 record updated");
+    });
+
+})
 
 app.listen(PORT, () => {
     console.log("Listening to port", PORT);
