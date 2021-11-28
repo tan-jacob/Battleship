@@ -61,7 +61,7 @@ app.get(catURL, async function(req, res) {
     };
 
     let sql = `INSERT INTO pictures(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
-    let sql2 = `INSERT INTO pictures(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
+    let sql2 = `INSERT INTO pictures(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
 
     db.query(sql, function(err, result) {
         if (err) {
@@ -180,10 +180,10 @@ app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
     console.log(req.params.commentid);
 
     let newComment = {
-        commentID: req.params.commentid,
+        deletedCommentID: req.params.commentid,
     }
 
-    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentid}`;
+    let sql = `DELETE FROM comments WHERE commentID = ${req.params.commentid}`;
     db.query(sql, function(err, result) {
         if (err) {
             res.status(404).send("Error: " + err.message);
@@ -191,7 +191,7 @@ app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
         } else {
             res.status(201).send(JSON.stringify(newComment));
         }
-        console.log("1 record updated");
+        console.log("1 record delete");
     });
 });
 
