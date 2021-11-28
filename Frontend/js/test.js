@@ -1,3 +1,5 @@
+const { text } = require("body-parser");
+
 function post() {
     let testdiv = document.getElementById('res');
 
@@ -15,6 +17,7 @@ function post() {
         comment: com
     }).then(res => {
         let response = JSON.parse(res);
+        console.log(response);
         testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
@@ -25,16 +28,17 @@ function put() {
     let testdiv = document.getElementById('res');
 
     let comID = document.getElementById('comid').value;
-    let com = document.getElementById('com').value;
+    let com = document.getElementById('comment').value;
 
     console.log("comid: " + comID + " com: " + com); 
 
-    let url = `http://localhost:9000/comments/${comID}`;
+    let url = `http://localhost:9000/comments/${pID}`;
 
     axios.put(url, {
         comment: com
     }).then(res => {
         let response = JSON.parse(res);
+        console.log(response);
         testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
@@ -50,6 +54,23 @@ function get() {
 
     axios.get(url).then(res => {
         console.log(res.data);
+        testdiv.innerHTML = res.data;
+    }).catch(function(error) {
+        console.log(error);
+      });
+}
+
+function deleteCom() {
+    let testdiv = document.getElementById('res');
+
+    let comID = document.getElementById('comidDel').value;
+
+    let url = `http://localhost:9000/comments/${comID}`;
+
+    axios.delete(url).then(res => {
+        let response = JSON.parse(res);
+        console.log(response);
+        testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
       });
