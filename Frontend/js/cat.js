@@ -26,5 +26,14 @@ let getOneCat = async () =>  {
 }
 
 let postComment = async (id) => {
+    id = 5;
 
+    let commentObj = {
+        comment : document.getElementById("comment").innerHTML,
+        pictureID : id
+
+    }
+    console.log(commentObj);
+    const response = await axios.post(localEndPointRoot + catURL + "/comments/" + id);
+    
 }
