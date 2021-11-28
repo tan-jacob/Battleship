@@ -60,8 +60,8 @@ app.get(catURL, async function(req, res) {
         picture2URL: result2.data.webpurl
     };
 
-    let sql = `INSERT INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
-    let sql2 = `INSERT INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
+    let sql = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
+    let sql2 = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
 
     db.query(sql, function(err, result) {
         if (err) {
