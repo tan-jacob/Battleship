@@ -59,6 +59,25 @@ app.get(catURL, async function(req, res) {
         picture2ID: result2.data.id,
         picture2URL: result2.data.webpurl
     };
+
+    let sql = `INSERT INTO pictures(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
+    let sql2 = `INSERT INTO pictures(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
+
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        }
+        console.log("picture 1 inserted");
+    });
+
+    db.query(sql2, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        }
+        console.log("picture 2 inserted");
+    });
     res.status(200).send(JSON.stringify(data));
 })
 
@@ -133,6 +152,46 @@ app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
             res.status(201).send(JSON.stringify(newComment));
         }
         console.log("1 record inserted");
+    });
+});
+
+app.put(`/comments/:commentid/`, jsonParser, function(req, res) {
+    console.log(req.body.comment);
+    console.log(req.params.commentid);
+
+    let newComment = {
+        commentID: req.params.commentid,
+        comment: req.body.comment
+    }
+
+    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentid}`;
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            res.status(201).send(JSON.stringify(newComment));
+        }
+        console.log("1 record updated");
+    });
+});
+
+app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
+    console.log(req.params.commentid);
+
+    let newComment = {
+        deletedCommentID: req.params.commentid,
+    }
+
+    let sql = `DELETE FROM comments WHERE commentID = ${req.params.commentid}`;
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            res.status(201).send(JSON.stringify(newComment));
+        }
+        console.log("1 record delete");
     });
 });
 
