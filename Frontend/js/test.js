@@ -25,11 +25,11 @@ function put() {
     let testdiv = document.getElementById('res');
 
     let comID = document.getElementById('comid').value;
-    let com = document.getElementById('comment').value;
+    let com = document.getElementById('com').value;
 
     console.log("comid: " + comID + " com: " + com); 
 
-    let url = `http://localhost:9000/comments/${cID}`;
+    let url = `http://localhost:9000/comments/${comID}`;
 
     axios.put(url, {
         comment: com

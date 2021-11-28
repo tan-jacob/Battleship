@@ -137,15 +137,15 @@ app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
 });
 
 app.put(`/comments/:commentid/`, jsonParser, function(req, res) {
-    console.log(req.body);
-    console.log(req.params);
+    console.log(req.body.comment);
+    console.log(req.params.commentid);
 
     let newComment = {
-        commentID: req.params.commentID,
+        commentID: req.params.commentid,
         comment: req.body.comment
     }
 
-    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentID}`;
+    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentid}`;
     db.query(sql, function(err, result) {
         if (err) {
             res.status(404).send("Error: " + err.message);
