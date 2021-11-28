@@ -26,17 +26,16 @@ let getOneCat = async () =>  {
 }
 
 let postComment = async () => {
-<<<<<<< HEAD
     let id = req.params.id;
-
-=======
->>>>>>> 285fa67664772ad97f0a7c13f888f1b27aaa0540
     let commentObj = {
         comment : document.getElementById("comment").innerHTML,
-        pictureID : id
-
+        pictureID : id,
     }
     console.log(commentObj);
-    const response = await axios.post(localEndPointRoot + catURL + "/comments/" + id);
+    const response = await axios.post(localEndPointRoot + catURL + "/comments/" + id , commentObj, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
     
 }
