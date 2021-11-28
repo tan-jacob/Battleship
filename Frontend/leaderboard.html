@@ -1,0 +1,43 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="css/leaderboard.css"> -->
+    
+     <!-- Compiled and minified CSS -->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+     <!-- Compiled and minified JavaScript -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+     
+    <title>Cat Leaderboard</title>
+    <!-- This will be the landing page for the app that displays the top 10 cats with the most votes -->
+</head>
+<body onload="showLeaderboard()">
+    <div class="container">
+        <button id="goBack" onclick="play()">Vote on Cats!</button>
+        <table class="responsive-table" id="leaderboard">
+            <tr>
+                <th id="position">Rank</th>
+                <th id="name">Cat</th>
+                <th id="score">Votes</th>
+            </tr>
+
+
+              </tr>
+
+        </table>
+        
+
+
+    </div>
+   
+
+
+
+    
+</body>
+</html>
+
+<script src="js/leaderboard.js"></script>
