@@ -10,7 +10,10 @@ let catImgDiv = document.getElementById("catPic");
 let commentDiv = document.getElementById("catComments")
 //UserName : Comments
 let getOneCat = async () =>  {
-    let id = req.params.id;
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get('id')
+
     const response = await axios.get(localEndPointRoot + catURL + "/" + id);
     console.log(response.data);
     catImgDiv.src = response.data[0].url;
