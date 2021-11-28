@@ -49,14 +49,12 @@ app.get( adminURL, function(req, res) {
 //Get 2 random cat images 
 app.get(catURL, async function(req, res) {
     const result1 = await axios.get(catAPI);
-    console.log(result1.data);
     const result2 = await axios.get(catAPI);
-    console.log(result2.data);
     let data = { 
         picture1ID: result1.data.id,
-        picture1URL: result1.data.url,
+        picture1URL: result1.data.webpurl,
         picture2ID: result2.data.id,
-        picture2URL: result2.data.url
+        picture2URL: result2.data.webpurl
     };
     res.status(200).send(JSON.stringify(data));
 })

@@ -6,7 +6,7 @@ const localEndPointRoot = 'http://localhost:9000'
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 const catURL = '/api/v1/cat';
 
-function getCat() {
+let getCat = () => {
     xhttp.open(GET, localEndPointRoot + catURL, true);
     xhttp.send();
     xhttp.onreadystatechange = function() { 
@@ -17,4 +17,8 @@ function getCat() {
             document.getElementById('cat2').src = response.picture2URL;
         }
     };
+}
+
+let vote = (num) => {
+    
 }

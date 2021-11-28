@@ -5,9 +5,10 @@
 
 # 8 End points
 Post - post account
-Post - post comment
+# Post - post comment
 Delete - delete comment 
 Put - update account
-Get - retrieve 2 random images on game page
+# Get - retrieve 2 random images on game page
+# Get - get comments 
 Get - retrieve top 10 images on leaderboard
 Get - retrieve account information
