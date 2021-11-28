@@ -10,9 +10,9 @@ const app = express();
 
 const db = mysql.createConnection({
     host: "localhost",
-    user: "lab",
-    password: "ISATeamD5",
-    database: 'ISAProject',
+    user: "root",
+    password: "",
+    database: 'isaproject',
 });
 
 app.use(function (req, res, next){
@@ -21,8 +21,6 @@ app.use(function (req, res, next){
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
-
-
 
 let counterGetUserID = 0;
 app.get(`${resource}/user/:userid`, function(req, res) {
@@ -89,9 +87,19 @@ app.post(`${resource}/user`, function(req, res) {
         });
 });
 
+app.get(`/leaderboard/:top`, function (req, res) {
+    let top = req.params.top;
+    console.log(top);
 
+    let sql = `SELECT * FROM votes ORDER BY votes DESC LIMIT ${top}`;
+    db.query(sql, function(sqlerr, sqlres) {
+        if (sqlerr) throw sqlerr;
+        //console.log(`${sqlres}`);
+        res.status(200).send(JSON.stringify(sqlres));
+    });
+});
 
 app.listen(PORT, () => {
     console.log("Listening to port", PORT);
-})
+});
 
