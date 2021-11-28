@@ -70,6 +70,8 @@ app.post(`${resource}/user`, function(req, res) {
         });
 });
 
+
+
 app.listen(PORT, () => {
     console.log("Listening to port", PORT);
 })
