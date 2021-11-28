@@ -1,8 +1,10 @@
 const express = require('express');
+const axios = require('axios');
 const mysql = require('mysql');
 const PORT = process.env.PORT || 9000;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
+const bodyParser = require('body-parser')
 const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 const axios = require('axios');
@@ -14,6 +16,8 @@ const db = mysql.createConnection({
     password: "",
     database: 'isaproject',
 });
+
+var jsonParser = bodyParser.json()
 
 app.use(function (req, res, next){
     res.header('Access-Control-Allow-Origin', '*');
@@ -94,6 +98,42 @@ app.get(`/leaderboard/:top`, function (req, res) {
         if (sqlerr) throw sqlerr;
         //console.log(`${sqlres}`);
         res.status(200).send(JSON.stringify(sqlres));
+    });
+});
+
+app.get(`/comments/:pictureid`, function (req, res) {
+    let pictureid = req.params.pictureid;
+    console.log(pictureid);
+
+    // join table with users to get name or username 
+    let sql = `SELECT * FROM comments WHERE pictureID=${pictureid}`;
+    db.query(sql, function(sqlerr, sqlres) {
+        if (sqlerr) throw sqlerr;
+        //console.log(`${sqlres}`);
+        res.status(200).send(JSON.stringify(sqlres));
+    });
+});
+
+app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
+    console.log(req.body);
+    console.log(req.body.comment);
+    console.log(req.body.userID);
+    
+    let newComment = {
+        userID: req.body.userID,
+        pictureID: req.params.pictureID,
+        comment: req.body.comment
+    }
+
+    let sql = `INSERT INTO comments(commentID, userID, pictureID, comment) VALUES (DEFAULT, ${req.body.userID} , ${req.body.pictureID}, "${req.body.comment}" )`;
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            res.status(201).send(JSON.stringify(newComment));
+        }
+        console.log("1 record inserted");
     });
 });
 

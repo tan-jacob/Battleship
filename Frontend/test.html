@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <label>userid: </label>
+        <input type="text" id="userid">
+        <label>pictureidd: </label>
+        <input type="text" id="pictureid">
+        <label>comment: </label>
+        <input type="text" id="comment">
+        <input type="button" onclick="post()" value="post">
+    </div>
+    <input type="button"  onclick="get()" value="get">
+    <div id="res">
+
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/test.js"></script>
+</body>
+</html>
