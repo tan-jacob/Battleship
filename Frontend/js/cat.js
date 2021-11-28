@@ -28,6 +28,11 @@ let getOneCat = async () =>  {
 }
 
 let postComment = async () => {
+<<<<<<< HEAD
+    let id = req.params.id;
+
+=======
+>>>>>>> 285fa67664772ad97f0a7c13f888f1b27aaa0540
     let commentObj = {
         comment : document.getElementById("comment").innerHTML,
         pictureID : id
