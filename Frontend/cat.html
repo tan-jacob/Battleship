@@ -11,7 +11,7 @@
     
 </head>
 
-<body>
+<body onload="getOneCat()">
     <nav>
         <div class="nav-wrapper">
           <a href="#!" class="brand-logo">Logo</a>
@@ -36,13 +36,14 @@
     </br>
         <div class="row">
             <div class="col">
-                <img id = "catPic" style="width:500;" src="https://thatcopy.github.io/catAPI/imgs/jpg/9812dfc.jpg" class="z-depth-5">
+                <img id = "catPic" style="width:500;"class="z-depth-5">
             </div> 
         </div>
         <div class="divider"></div>
         <div class="row">
             <div class="col">
-                <p id="catComments">Comments</p>
+                <h4>Comments</h4>
+                <p id="catComments"></p>
             </div>  
             
         </div>
@@ -52,5 +53,7 @@
 
  <!-- Compiled and minified JavaScript -->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <script src="js/cat.js"></script>
      
 </html>
