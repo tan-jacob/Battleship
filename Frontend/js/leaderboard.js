@@ -25,22 +25,26 @@ const lboardurl = '/leaderboard/'
 //     })
 // }
 
-function showLeaderboard() {
+ showLeaderboard = () => {
     xhttp.open(GET, localEndPointRoot + lboardurl +"10", true);
     xhttp.send();
     xhttp.onreadystatechange = function() { 
         if(this.readyState == 4 && this.status == 200) { 
             let response = JSON.parse(this.response);
             let position = 1;
-
+            let lb = document.getElementById("leaderboard")
             response.forEach(element => {
-                document.getElementById("leaderboard").innerHTML 
-                += `<th>${position}</th>
-                    <th>${element.pictureID}</th>
-                    <th>${element.votes}</th>`
-                    position++;
-    
+                console.log(element.url);
+                lb.innerHTML 
+                += `<tr>
+                    <td style="font-size: 4vh;">Rank ${position}</td>
+                    <td style="text-align: center;"><img src="${element.url}" alt="" width=350></img></td>
+                    <td style="font-size: 4vh;">Votes: ${element.votes}</td>
+                    </tr>`
+                    position++;         
             });   
+//
+        
         }
     };
 }
