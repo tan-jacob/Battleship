@@ -8,6 +8,7 @@ const localEndPointRoot = 'http://localhost:8888'
 const resource = '/api/v1';
 const url = localEndPointRoot + resource;
 const lboardurl = '/leaderboard/'
+const catURL = '/api/v1/cat';
 
  showLeaderboard = () => {
     xhttp.open(GET, localEndPointRoot + lboardurl +"10", true);
@@ -22,7 +23,7 @@ const lboardurl = '/leaderboard/'
                 lb.innerHTML 
                 += `<tr>
                     <td style="font-size: 4vh"><b>Rank ${position}</b></td>
-                    <td style="text-align: center;"><img src="${element.url}" alt="" width=300></img></td>
+                    <td style="text-align: center;"><img onclick=viewCat(${element.pictureID}) src="${element.url}" alt="" width=300></img></td>
                     <td style="font-size: 4vh;">Votes: ${element.votes}</td>
                     </tr>`
                     position++;         
@@ -30,5 +31,9 @@ const lboardurl = '/leaderboard/'
         
         }
     };
+
+    viewCat = async (id) => {
+        window.location.href = catURL + `/${id}`;
+    }
 }
 
