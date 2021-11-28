@@ -8,12 +8,12 @@ const catURL = '/api/v1/cat';
 
 let catImgDiv = document.getElementById("catPic");
 let commentDiv = document.getElementById("catComments")
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const id = urlParams.get('id')
+
 //UserName : Comments
 let getOneCat = async () =>  {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const id = urlParams.get('id')
-
     const response = await axios.get(localEndPointRoot + catURL + "/" + id);
     console.log(response.data);
     catImgDiv.src = response.data[0].url;
@@ -25,9 +25,7 @@ let getOneCat = async () =>  {
     })
 }
 
-let postComment = async (id) => {
-    id = 5;
-
+let postComment = async () => {
     let commentObj = {
         comment : document.getElementById("comment").innerHTML,
         pictureID : id
