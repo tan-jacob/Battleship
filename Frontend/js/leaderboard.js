@@ -33,7 +33,8 @@ const catURL = '/api/v1/cat';
     };
 
     viewCat = async (id) => {
-        window.location.href = catURL + `/${id}`;
+        console.log("click view cat");
+        window.location.href = `/Frontend/cat.html?id=${id}`;
     }
 }
 
