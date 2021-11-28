@@ -22,8 +22,8 @@ let getOneCat = async () =>  {
     })
 }
 
-let postComment = async (id) => {
-    id = 5;
+let postComment = async () => {
+    let id = req.params.id;
 
     let commentObj = {
         comment : document.getElementById("comment").innerHTML,
