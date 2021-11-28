@@ -2,7 +2,7 @@ const xhttp = new XMLHttpRequest();
 const GET = 'GET';
 const POST = 'POST';
 const endPointRoot = 'hostedip';
-const localEndPointRoot = 'http://localhost:9000'
+const localEndPointRoot = 'http://localhost:8888'
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 const catURL = '/api/v1/cat';
 
