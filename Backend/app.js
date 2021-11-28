@@ -82,10 +82,11 @@ app.get(catURL, async function(req, res) {
 })
 
 app.get(catURL + '/:pictureid', function(req, res) {
-    let sql = 'SELECT * FROM comment AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.pictureID=u.pictureID';
+    let sql = 'SELECT * FROM comments AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.userID=u.userID;'
+    + ` WHERE c.pictureID=${req.params.pictureid}`;
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
-        //console.log(`${sqlres}`);
+        console.log(`${sqlres}`);
         res.status(200).send(JSON.stringify(sqlres));
     });
 

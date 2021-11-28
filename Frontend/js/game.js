@@ -44,23 +44,10 @@ let getCat = async() => {
     cat1.dataset.catid = response.data.picture1ID;
     cat2.src = response.data.picture2URL;
     cat2.dataset.catid = response.data.picture2ID;
-    b1.onclick = function () {
-        vote(response.data.picture1ID);
-        return false;
-    };
-    b2.onclick = function () {
-        vote(response.data.picture2ID);
-        return false;
-    };
-
-    c1.onclick = function () {
-        comment(response.data.picture1ID);
-        return false;
-    };
-    c2.onclick = function () { 
-        comment(response.data.picture2ID);
-        return false;
-    };
+    b1.onclick = function () {vote(response.data.picture1ID);};
+    b2.onclick = function () {vote(response.data.picture2ID);};
+    c1.onclick = function () {comment(response.data.picture1ID);};
+    c2.onclick = function () { comment(response.data.picture2ID);};
 
     return response;
 }

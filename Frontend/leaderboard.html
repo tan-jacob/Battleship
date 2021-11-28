@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/leaderboard.css">
     
      <!-- Compiled and minified CSS -->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
      <!-- Compiled and minified JavaScript -->
@@ -15,30 +16,41 @@
     <!-- This will be the landing page for the app that displays the top 10 cats with the most votes -->
 </head>
 <body onload="showLeaderboard()">
-    <nav>
-        <div class="nav-wrapper">
-          <a href="#" class="brand-logo">Cats</a>
-          <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href="sass.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">JavaScript</a></li>
-          </ul>
-        </div>
-      </nav>
+  <nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Logo</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">Javascript</a></li>
+        <li><a href="mobile.html">Mobile</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li><a href="sass.html">Sass</a></li>
+    <li><a href="badges.html">Components</a></li>
+    <li><a href="collapsible.html">Javascript</a></li>
+    <li><a href="mobile.html">Mobile</a></li>
+  </ul>
       
     <div class="container">
         <h2>Cat Leaderboard</h2>
-        <a href="game.html"><button id="playVote">Go Vote!</button></a>
+        <a href="game.html" class="waves-effect waves-light btn"><i class="material-icons left">keyboard_arrow_up</i>Go Vote!</a>
         
         <table class="responsive-table" id="leaderboard">
         </table>
-    </div>
-   
-
-
-
-    
+    </div>  
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems, options);
+  });
+</script>
+<script type="text/javascript" src="js/materialize.min.js"></script>
+<script src="js/leaderboard.js"></script>
 </html>
 
-<script src="js/leaderboard.js"></script>
