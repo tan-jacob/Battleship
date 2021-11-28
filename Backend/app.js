@@ -3,6 +3,9 @@ const mysql = require('mysql');
 const PORT = process.env.PORT || 9000;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
+const catURL = '/api/v1/cat';
+const catAPI = 'https://thatcopy.pw/catapi/rest/';
+const axios = require('axios');
 const app = express();
 
 const db = mysql.createConnection({
@@ -44,6 +47,22 @@ app.get( adminURL, function(req, res) {
     console.log(data.get);
     res.status(200).send(JSON.stringify(data));
 });
+
+//Get 2 random cat images 
+app.get(catURL, async function(req, res) {
+    const result1 = await axios.get(catAPI);
+    console.log(result1.data);
+    const result2 = await axios.get(catAPI);
+    console.log(result2.data);
+    let data = { 
+        picture1ID: result1.data.id,
+        picture1URL: result1.data.url,
+        picture2ID: result2.data.id,
+        picture2URL: result2.data.url
+    };
+    res.status(200).send(JSON.stringify(data));
+})
+
 
 let counterPostUser = 0;
 app.post(`${resource}/user`, function(req, res) {
