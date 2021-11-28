@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="css/leaderboard.css"> -->
+    <link rel="stylesheet" href="css/leaderboard.css">
     
      <!-- Compiled and minified CSS -->
      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -16,21 +16,11 @@
 </head>
 <body onload="showLeaderboard()">
     <div class="container">
-        <button id="goBack" onclick="play()">Vote on Cats!</button>
-        <table class="responsive-table" id="leaderboard">
-            <tr>
-                <th id="position">Rank</th>
-                <th id="name">Cat</th>
-                <th id="score">Votes</th>
-            </tr>
-
-
-              </tr>
-
-        </table>
+        <h2>Cat Leaderboard</h2>
+        <a href="game.html"><button id="playVote">Go Vote!</button></a>
         
-
-
+        <table class="responsive-table" id="leaderboard">
+        </table>
     </div>
    
 

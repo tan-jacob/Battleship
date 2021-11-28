@@ -111,7 +111,7 @@ app.get(`/leaderboard/:top`, function (req, res) {
     let top = req.params.top;
     console.log(top);
 
-    let sql = `SELECT * FROM votes ORDER BY votes DESC LIMIT ${top}`;
+    let sql = `SELECT * FROM votes JOIN picture ON picture.pictureID = votes.pictureID ORDER BY votes DESC LIMIT ${top}` ;
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
         //console.log(`${sqlres}`);
