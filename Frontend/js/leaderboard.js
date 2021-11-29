@@ -22,7 +22,7 @@ const catURL = '/api/v1/cat';
                 lb.innerHTML 
                 += `<tr>
                     <td style="font-size: 4vh"><b>Rank ${position}</b></td>
-                    <td style="text-align: center;"><img onclick=viewCat(${element.pictureID}) src="${element.url}" alt="" width=300></img></td>
+                    <td style="text-align: center;"><img onclick=viewCat(${element.pictureID}) src="${element.url}" alt="" height=250></img></td>
                     <td style="font-size: 4vh;">Votes: ${element.votes}</td>
                     </tr>`
                     position++;         
@@ -35,5 +35,6 @@ const catURL = '/api/v1/cat';
         console.log("click view cat");
         window.location.href = `/Frontend/cat.html?id=${id}`;
     }
+
 }
 
