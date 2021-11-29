@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 
 const PORT = process.env.PORT || 8888;
@@ -13,6 +14,7 @@ const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
+
 const EXPIRY = 300;
 
 const app = express();
@@ -32,8 +34,9 @@ db.connect((err) => {
 var jsonParser = bodyParser.json();
 
 app.use(function (req, res, next){
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
@@ -94,32 +97,70 @@ app.post('/register', jsonParser, async (req, res) => {
 });
 
 app.post(`/login`, jsonParser, async (req, res) => {
+    console.log(req.body.password);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
+    let accessToken = '';
     let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
-    db.promise(sql)
+    let promise = db.promise(sql)
     .then((res) => {
         console.log(res[0]);
         if(res[0].length == 0) {
             //user does not exist
             res.send('user does not exist');
         } else {
-            sql = `SELECT * FROM users WHERE (username = '${req.body.username}' AND password = '${req.body.password}')`;
-            return db.promise(sql);
+
+            bcrypt.compare(req.body.password, res[0].password, function(err, res) {
+                if (err){
+                  throw err;
+                }
+                if (res)
+                    accessToken = jwt.sign({
+                        data: {
+                            userid: req.body.userID,
+                            name: req.body.name
+                        }
+                    }, TOKEN_SECRET, {expiresIn: EXPIRY});
+                    res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+                } else {
+                  // response is OutgoingMessage object that server response http request
+                  return response.json({success: false, message: 'passwords do not match'});
+                }
+              });
+            
+            //console.log(accessToken);
+            
+
+            
         }
+        //console.log('cookie');
+        //res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+        //return promise;
     }).catch((err) => {
         console.log(err);
     })
+    
+    // .finally(() => {
+    //     console.log('cookie');
+    //     //console.log(accessToken);
+    //     res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+    //     res.status(200).send({token: jwt.token});
+    //     //return promise;
+    // });
+    
+    //if username and password is correct => sent jwt
+    /*
+    let accessToken = jwt.sign({
+        data: {
+            userid: res[0].body.userID,
+            name: res[0].body.name
+        }
+    }, TOKEN_SECRET, {expiresIn: EXPIRY});
+    console.log(accessToken);
+    res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+    */
+   // res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
 
-    // if username and password is correct => sent jwt
-    // let accessToken = jwt.sign({
-    //     data: {
-    //         res[0].userid,
-    //         res[0].name
-    //     }
-    // }, TOKEN_SECRET, {expiresIn: 120});
-
-    // res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+    //res.end();
 })
 
 /* login token
@@ -246,7 +287,22 @@ app.get(`/comments/:pictureid`, function (req, res) {
     });
 });
 
-app.post(catURL + `/comments/:pictureid/`, jsonParser, function(req, res) {
+//Posting comments
+app.post(catURL + `/comments/:pictureid/`, authToken, function(req, res) {
+    /*
+    jwt.verify(req.token, TOKEN_SECRET, (err, authorizedData) => {
+        if(err) {
+            console.log('jwt error: ', err);
+            res.sendStatus(403);
+        } else {
+            res.JSON({
+                message: 'Verified credentials',
+                authorizedData
+            });
+            console.log('JWT Success');
+        }
+    })
+*/
     console.log("postcomment", req.body);
     console.log(req.body.comment);
     console.log(req.body.userID);
