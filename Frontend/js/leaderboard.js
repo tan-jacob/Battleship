@@ -35,5 +35,6 @@ const catURL = '/api/v1/cat';
         console.log("click view cat");
         window.location.href = `/Frontend/cat.html?id=${id}`;
     }
+
 }
 
