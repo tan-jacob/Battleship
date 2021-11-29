@@ -1,5 +1,9 @@
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+<<<<<<< HEAD
+=======
+
+>>>>>>> fbe1567413c0102bacf1fcdf4a38a9dffb0369b2
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
@@ -15,8 +19,6 @@ const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 
 const TOKEN_SECRET = process.env.TOKEN_SECRET;
-
-console.log(TOKEN_SECRET);
 
 const EXPIRY = 300;
 
