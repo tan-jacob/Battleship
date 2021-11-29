@@ -1,9 +1,9 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "This is the API for our Connect Four Browser Game",
-    "version": "1.0.0",
-    "title": "Connect Four",
+    "description": "This is the API for our Cat Voting Game",
+    "version": "3.0.0",
+    "title": "This or That with Cats",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
       "email": "apiteam@swagger.io"
@@ -168,73 +168,6 @@
             "description": "User not found"
           }
         }
-      },
-      "put": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Updated user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "updateUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "name that need to be updated",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Updated user object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid user supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "user"
-        ],
-        "summary": "Delete user",
-        "description": "This can only be done by the logged in user.",
-        "operationId": "deleteUser",
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "username",
-            "in": "path",
-            "description": "The name that needs to be deleted",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Invalid username supplied"
-          },
-          "404": {
-            "description": "User not found"
-          }
-        }
       }
     },
     "/admin": {
@@ -266,8 +199,159 @@
           }
         }
       }
+    },
+    "/cat": {
+      "get": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "gets 2 random cats",
+        "description": "gets 2 random cats from the cat api",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/:pictureid": {
+      "get": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "get 1 cat using pictureid",
+        "description": "get 1 cat using pictureid",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/leaderboard/": {
+      "get": {
+        "tags": [
+          "leaderboard"
+        ],
+        "summary": "get top 10 cats by votes",
+        "description": "get top 10 cats by votes",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/comments/:pictureid": {
+      "get": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "get comments of cat by id",
+        "description": "get comments of cat by id",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/comments/:pictureid/": {
+      "post": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "post comment to cat by id",
+        "description": "post comment to cat by id",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/comments/:commentid/": {
+      "put": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "update comment of cat by commentid",
+        "description": "update comment of cat by commentid",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/comments/delete/:commentid/": {
+      "delete": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "delete comment of cat by commentid",
+        "description": "update comment of cat by commentid",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/cat/vote/:pictureid/": {
+      "put": {
+        "tags": [
+          "cat"
+        ],
+        "summary": "vote for cat",
+        "description": "vote for cat",
+        "operationId": "getCat",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
     }
-
   },
   "securityDefinitions": {
     "petstore_auth": {
