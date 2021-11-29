@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
-=======
-require('dotenv').config();
->>>>>>> a88d28af0ba594d0a80ade778f19e2c82a2c8e62
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
