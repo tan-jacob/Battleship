@@ -71,7 +71,7 @@ function authToken(req, res, next) {
     });
 }
 
-app.post('/register', jsonParser, async (req, res) => {
+app.post(`${resource}/register`, jsonParser, async (req, res) => {
 
     console.log(req.body);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -96,7 +96,7 @@ app.post('/register', jsonParser, async (req, res) => {
     });
 });
 
-app.post(`/login`, jsonParser, async (req, res) => {
+app.post(`${resource}/user/login`, jsonParser, async (req, res) => {
     console.log(req.body.password);
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     let accessToken = '';
@@ -262,7 +262,7 @@ app.post(`${resource}/user`, function(req, res) {
         });
 });
 
-app.get(`/leaderboard/:top`, function (req, res) {
+app.get(`${resource}/leaderboard/:top`, function (req, res) {
     let top = req.params.top;
     console.log(top);
 
@@ -274,7 +274,7 @@ app.get(`/leaderboard/:top`, function (req, res) {
     });
 });
 
-app.get(`/comments/:pictureid`, function (req, res) {
+app.get(`${catURL}/comments/:pictureid`, function (req, res) {
     let pictureid = req.params.pictureid;
     console.log(pictureid);
 
@@ -325,7 +325,7 @@ app.post(catURL + `/comments/:pictureid/`, authToken, function(req, res) {
     });
 });
 
-app.put(`/comments/:commentid/`, jsonParser, function(req, res) {
+app.put(`${catURL}/comments/:commentid/`, jsonParser, function(req, res) {
     console.log(req.body.comment);
     console.log(req.params.commentid);
 
@@ -346,7 +346,7 @@ app.put(`/comments/:commentid/`, jsonParser, function(req, res) {
     });
 });
 
-app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
+app.delete(`${catURL}/comments/delete/:commentid/`, jsonParser, function(req, res) {
     console.log(req.params.commentid);
 
     let newComment = {
@@ -366,7 +366,7 @@ app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
 });
 
 //vote for cat by id
-app.put(`/vote/:pictureid`, jsonParser, function(req, res) {
+app.put(`${catURL}/vote/:pictureid`, jsonParser, function(req, res) {
     let sql = `UPDATE votes SET votes = votes + 1 WHERE pictureid = ${req.params.pictureid}`
 
     db.query(sql, function(err, result) {
