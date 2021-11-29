@@ -15,4 +15,6 @@ function register() {
     }).catch(function(error) {
         console.log(error);
     });
+    window.location.href = `/Frontend/game.html`
+
 }
