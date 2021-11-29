@@ -11,7 +11,7 @@ function register() {
         return false;
       }
 
-    let url = `http://localhost:8888/register`;
+    let url = `http://localhost:8888/api/v1/register`;
 
     axios.post(url, {
         username: un,
@@ -20,6 +20,6 @@ function register() {
     }).catch(function(error) {
         console.log(error);
     });
-    window.location.href = `/Frontend/game.html`
+    //window.location.href = `/Frontend/game.html`
 
 }
