@@ -7,3 +7,5 @@ let userInfo;
 if (getCookieValue('userInfo') != undefined || getCookieValue('userInfo') != null) {
     userInfo = JSON.parse(getCookieValue('userInfo'));
 }
+
+console.log(userInfo);

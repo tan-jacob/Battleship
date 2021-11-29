@@ -13,7 +13,7 @@ const adminURL = '/api/v1/admin';
 const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 
-const TOKEN_SECRET = '314b391810080478941a2b1996a2028d9577c236d0069c236afd27b003a1c7d765d1557c0f176ea9247a6ea2853c681206b85122d15862eb729bc8747945e768';
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 console.log(TOKEN_SECRET);
 
