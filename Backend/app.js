@@ -248,7 +248,6 @@ app.get(`${catURL}/comments/:pictureid`, function (req, res) {
     let pictureid = req.params.pictureid;
     console.log(pictureid);
 
-    // join table with users to get name or username 
     let sql = `SELECT * FROM comments WHERE pictureID=${pictureid}`;
     db.query(sql, function(sqlerr, sqlres) {
         if (sqlerr) throw sqlerr;
@@ -257,22 +256,20 @@ app.get(`${catURL}/comments/:pictureid`, function (req, res) {
     });
 });
 
+app.get(`${catURL}/comments/user/:userid`, function (req, res) {
+    let sql = `SELECT * FROM comments WHERE userID=${req.params.userid}`;
+
+    //console.log(req.params.userid);
+    db.query(sql, function(sqlerr, sqlres) {
+        if (sqlerr) throw sqlerr;
+        //console.log(`${sqlres}`);
+        console.log("pls" + sqlres);
+        res.status(200).send(JSON.stringify(sqlres));
+    });
+});
+
 //Posting comments
-app.post(catURL + `/comments/:pictureid/`, authToken, function(req, res) {
-    /*
-    jwt.verify(req.token, TOKEN_SECRET, (err, authorizedData) => {
-        if(err) {
-            console.log('jwt error: ', err);
-            res.sendStatus(403);
-        } else {
-            res.JSON({
-                message: 'Verified credentials',
-                authorizedData
-            });
-            console.log('JWT Success');
-        }
-    })
-*/
+app.post(catURL + `/comments/:pictureid/`, jsonParser, function(req, res) {
     console.log("postcomment", req.body);
     console.log(req.body.comment);
     console.log(req.body.userID);
