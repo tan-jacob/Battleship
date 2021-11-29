@@ -11,7 +11,7 @@ let cat2 = document.getElementById('cat2');
 let b1 = document.getElementById('btn1');
 let b2 = document.getElementById('btn2');
 
-let getCat = async() => {
+let getCat = async () => {
     const response = await axios.get(localEndPointRoot + catURL);
     console.log(response);
     cat1.src = response.data.picture1URL;
@@ -24,8 +24,10 @@ let getCat = async() => {
     return response;
 }
 
-let vote = (num) => {
+let vote = async (num) => {
     console.log("vote for cat", num);
     const response = await axios.put(localEndPointRoot + '/vote/' + num);
     getCat()
 }
+
+window.onload(getCat());

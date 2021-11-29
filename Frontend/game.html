@@ -2,6 +2,9 @@
 <html>
 
     <head>
+        <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>This Cat or that Cat</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous" />
@@ -17,47 +20,39 @@
 
     <nav>
         <div class="nav-wrapper">
-          <a href="#!" class="brand-logo">Logo</a>
+            <a href="leaderboard.html" class="brand-logo center">Cats</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
-            <li><a href="sass.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">Javascript</a></li>
-            <li><a href="mobile.html">Mobile</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="game.html">Vote for Cats</a></li>
+            <li><a href="#">Profile</a></li>
           </ul>
         </div>
       </nav>
     
       <ul class="sidenav" id="mobile-demo">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="game.html">Vote for Cats</a></li>
+        <li><a href="#">Profile</a></li>
       </ul>
 
-    <h1>This Cat or That Cat?</h1>
-    <button onclick=getCat()>Cat</button>
+    
+
+    <!-- <button onclick=getCat()>Cat</button> -->
 
     <div class='container'>
+        <h2>This Cat or That Cat?</h2>
+        <h6>Vote for you favourite cat by clicking on the 'Vote for Cat' Button</h6>
+        </br>
         <div class='row'>
             <div  id = "cat1Col" class="col-sm">
-                <img id='cat1' class="img-fluid" alt="Responsive image">
+                <img id='cat1' class="responsive-img materialbox" alt="Responsive image">
                 <button id='btn1' class="btn btn-primary">Vote for Cat 1</button>
-                <form>
-                    <input type="text" id="comment1"><br>
-                    <button id="comm1" type="submit" class="btn-success">Comment</button>
-                    <p id= pcomm1></p>
-                </form>
             </div>
 
             <div id = "cat2Col" class="col-sm">
-                <img id='cat2' class="img-fluid" alt="Responsive image">
+                <img id='cat2' class="responsive-img materialbox" alt="Responsive image">
                 <button  id='btn2' class="btn btn-primary">Vote for Cat 2</button>
-                <form>
-                    <input type="text" id="comment2"><br>
-                    <button id="comm2" type="submit" class="btn-success">Comment</button>
-                    <p id= pcomm2></p>
-                </form>
             </div>
         </div>
         <div class='row'>
@@ -66,6 +61,17 @@
     </div>
 
 </body>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.materialboxed');
+    var instances = M.Materialbox.init(elems, options);
+  });
+
+</script>
+
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="js/game.js"></script>
 </html>

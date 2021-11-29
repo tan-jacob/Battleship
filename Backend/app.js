@@ -142,8 +142,8 @@ app.get(`/comments/:pictureid`, function (req, res) {
     });
 });
 
-app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
-    console.log(req.body);
+app.post(catURL + `/comments/:pictureid/`, jsonParser, function(req, res) {
+    console.log("postcomment", req.body);
     console.log(req.body.comment);
     console.log(req.body.userID);
     

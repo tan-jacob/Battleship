@@ -1,6 +1,5 @@
 //this will be how the leaderboard is generated
 const xhttp = new XMLHttpRequest();
-//const { default: axios } = require("axios");
 const GET = 'GET';
 const POST = 'POST';
 

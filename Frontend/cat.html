@@ -15,22 +15,20 @@
 <body onload="getOneCat()">
     <nav>
         <div class="nav-wrapper">
-          <a href="#!" class="brand-logo">Logo</a>
+            <a href="leaderboard.html" class="brand-logo center">Cats</a>
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
-            <li><a href="sass.html">Sass</a></li>
-            <li><a href="badges.html">Components</a></li>
-            <li><a href="collapsible.html">Javascript</a></li>
-            <li><a href="mobile.html">Mobile</a></li>
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="game.html">Vote for Cats</a></li>
+            <li><a href="#">Profile</a></li>
           </ul>
         </div>
       </nav>
     
       <ul class="sidenav" id="mobile-demo">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">Javascript</a></li>
-        <li><a href="mobile.html">Mobile</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="game.html">Vote for Cats</a></li>
+        <li><a href="#">Profile</a></li>
       </ul>
 
     <div class="container">
@@ -43,15 +41,12 @@
         <div class="divider"></div>
         <h4>Comments</h4>
         <div>
-            <form onsubmit="postComment()">
                 <div class="input-field col s12">
                     <input placeholder="Type Comment Here" id="comment" type="text">
                   </div>
-                  <button class="btn waves-effect waves-light" type="submit">Comment
+                  <button class="btn waves-effect waves-light" onclick="postComment()">Comment
                     <i class="material-icons right">send</i>
                   </button>
-
-            </form>
         </div>
         <div class="row">
             <div class="col">
