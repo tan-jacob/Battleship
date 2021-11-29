@@ -41,7 +41,7 @@ let postComment = async () => {
             let data = {
                 comment : document.getElementById("comment").value,
                 pictureID : id,
-                userID : userInfo.userID
+                userID : userInfo.userid
         }
         const response = await axios({
             method: 'POST',
