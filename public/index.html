@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+</head>
+<body>
+    <h2>Admin Page</h2>
+    <a href="/api.json">API Documentation</a>
+</br>
+
+    <div style="display: block" id="logindiv">
+        <label>Admin Username: </label>
+        <input type="text" id="username">
+        <label>Admin Password: </label>
+        <input type="text" id="password">
+        <input type="button" id="loginButton" onclick="login()" value="login">
+    </div>
+
+    
+    <div style="display: none" id="datadiv">
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>Request</th>
+            </tr>
+
+            <tr>
+                <td>GET</td>
+                <td>/API/v1/user/:userid</td>
+                <td id='counterGetUser'></td>
+            </tr>
+
+            <tr>
+                <td>PUT</td>
+                <td>/API/v1/user</td>
+                <td id='counterPostUser'></td>
+            </tr>
+        </table>
+        <input type="button" value="getdata" onclick="getData()">
+
+
+        <h3>Press the post button below to add a user</h3>
+        <div id="testdiv"></div>
+        <input type="button" onclick=postUser() value="post user">
+
+        <h3>Enter a user id to get user information</h3>
+        <input type='text' id="userid" value="id here">
+        <input type="button" onclick=getUser() value="get user">
+
+        <div id="testdivUser">
+            <p id="user"></p>
+            <p id="username"></p>
+            <p id="password"></p>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
+

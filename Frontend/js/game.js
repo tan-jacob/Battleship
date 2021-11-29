@@ -6,19 +6,28 @@ const localEndPointRoot = 'http://localhost:8888'
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 const catURL = '/api/v1/cat';
 
-let getCat = () => {
-    xhttp.open(GET, localEndPointRoot + catURL, true);
-    xhttp.send();
-    xhttp.onreadystatechange = function() { 
-        if(this.readyState == 4 && this.status == 200) { 
-            console.log(this.response);
-            let response = JSON.parse(this.response);
-            document.getElementById('cat1').src = response.picture1URL;
-            document.getElementById('cat2').src = response.picture2URL;
-        }
-    };
+let cat1 = document.getElementById('cat1');
+let cat2 = document.getElementById('cat2');
+let b1 = document.getElementById('btn1');
+let b2 = document.getElementById('btn2');
+
+let getCat = async () => {
+    const response = await axios.get(localEndPointRoot + catURL);
+    console.log(response);
+    cat1.src = response.data.picture1URL;
+    cat1.dataset.catid = response.data.picture1ID;
+    cat2.src = response.data.picture2URL;
+    cat2.dataset.catid = response.data.picture2ID;
+    b1.onclick = function () {vote(response.data.picture1ID);};
+    b2.onclick = function () {vote(response.data.picture2ID);};
+
+    return response;
 }
 
-let vote = (num) => {
-    
+let vote = async (num) => {
+    console.log("vote for cat", num);
+    const response = await axios.put(localEndPointRoot + '/vote/' + num);
+    getCat()
 }
+
+window.onload(getCat());

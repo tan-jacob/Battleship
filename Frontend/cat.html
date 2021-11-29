@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat!</title>
+
+    <!-- Compiled and minified CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    
+</head>
+
+<body onload="getOneCat()">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="leaderboard.html" class="brand-logo center">Cats</a>
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="leaderboard.html">Leaderboard</a></li>
+            <li><a href="game.html">Vote for Cats</a></li>
+            <li><a href="#">Profile</a></li>
+          </ul>
+        </div>
+      </nav>
+    
+      <ul class="sidenav" id="mobile-demo">
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="game.html">Vote for Cats</a></li>
+        <li><a href="#">Profile</a></li>
+      </ul>
+
+    <div class="container">
+    </br>
+        <div class="row">
+            <div class="col">
+                <img id = "catPic" style="width:500;"class="z-depth-5">
+            </div> 
+        </div>
+        <div class="divider"></div>
+        <h4>Comments</h4>
+        <div>
+                <div class="input-field col s12">
+                    <input placeholder="Type Comment Here" id="comment" type="text">
+                  </div>
+                  <button class="btn waves-effect waves-light" onclick="postComment()">Comment
+                    <i class="material-icons right">send</i>
+                  </button>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h5 id="catComments"></h5>
+            </div>  
+            
+        </div>
+    </div>
+    
+</body>
+
+ <!-- Compiled and minified JavaScript -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <script src="js/cat.js"></script>
+     
+</html>

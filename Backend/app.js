@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
-const PORT = process.env.PORT || 9000;
+const PORT = process.env.PORT || 8888;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
 const bodyParser = require('body-parser')
@@ -60,8 +60,8 @@ app.get(catURL, async function(req, res) {
         picture2URL: result2.data.webpurl
     };
 
-    let sql = `INSERT INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
-    let sql2 = `INSERT INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
+    let sql = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
+    let sql2 = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
 
     db.query(sql, function(err, result) {
         if (err) {
@@ -81,6 +81,16 @@ app.get(catURL, async function(req, res) {
     res.status(200).send(JSON.stringify(data));
 })
 
+//Get cat info by id
+app.get(catURL + '/:pictureid', function(req, res) {
+    let sql = 'SELECT * FROM comments AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.userID=u.userID'
+    + ` WHERE c.pictureID=${req.params.pictureid}`;
+    db.query(sql, function(sqlerr, sqlres) {
+        if (sqlerr) throw sqlerr;
+        console.log(`${sqlres}`);
+        res.status(200).send(JSON.stringify(sqlres));
+    });
+})
 
 let counterPostUser = 0;
 app.post(`${resource}/user`, function(req, res) {
@@ -132,8 +142,8 @@ app.get(`/comments/:pictureid`, function (req, res) {
     });
 });
 
-app.post(`/comments/:pictureid/`, jsonParser, function(req, res) {
-    console.log(req.body);
+app.post(catURL + `/comments/:pictureid/`, jsonParser, function(req, res) {
+    console.log("postcomment", req.body);
     console.log(req.body.comment);
     console.log(req.body.userID);
     
@@ -194,6 +204,21 @@ app.delete(`/comments/:commentid/`, jsonParser, function(req, res) {
         console.log("1 record delete");
     });
 });
+
+//vote for cat by id
+app.put(`/vote/:pictureid`, jsonParser, function(req, res) {
+    let sql = `UPDATE votes SET votes = votes + 1 WHERE pictureid = ${req.params.pictureid}`
+
+    db.query(sql, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            res.status(201).send("Success");
+        }
+        console.log("1 record updated");
+    });
+})
 
 app.listen(PORT, () => {
     console.log("Listening to port", PORT);
