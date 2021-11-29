@@ -28,8 +28,13 @@ let getOneCat = async () =>  {
 }
 
 let postComment = async () => {
+<<<<<<< HEAD
     let data = {
         comment : document.getElementById("comment").value,
+=======
+    let commentObj = {
+        comment : document.getElementById("comment").innerHTML,
+>>>>>>> c8aec32b1cecc61581b990f0756b4c47e0e12eee
         pictureID : id,
         userID : 1
     }
