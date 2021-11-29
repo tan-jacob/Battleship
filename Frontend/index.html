@@ -3,58 +3,115 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!-- Compiled and minified CSS -->
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+ 
     <title>Admin</title>
 </head>
 <body>
-    <h2>Admin Page</h2>
+    <div class="container">
+        <h2>Admin Page</h2>
+        <div style="display: block" id="logindiv">
+            <label>Admin Username: </label>
+            <input type="text" id="username">
+            <label>Admin Password: </label>
+            <input type="text" id="password">
+            <input type="button" onclick=login() class="waves-effect waves-light btn" value = "Login" />
+        </div>
+
+    </div> 
 </br>
-
-    <div style="display: block" id="logindiv">
-        <label>Admin Username: </label>
-        <input type="text" id="username">
-        <label>Admin Password: </label>
-        <input type="text" id="password">
-        <input type="button" id="loginButton" onclick="login()" value="login">
-    </div>
-
+    <div id ="endpointDivs"class="container">
+        <div style="display: block" id="datadiv"> <!--change back to none-->
+            <table>
+                <tr>
+                    <th>Method</th>
+                    <th>Endpoint</th>
+                    <th>Request</th>
+                </tr>
     
-    <div style="display: none" id="datadiv">
-        <table>
-            <tr>
-                <th>Method</th>
-                <th>Endpoint</th>
-                <th>Request</th>
-            </tr>
-
-            <tr>
-                <td>GET</td>
-                <td>/API/v1/user/:userid</td>
-                <td id='counterGetUser'></td>
-            </tr>
-
-            <tr>
-                <td>PUT</td>
-                <td>/API/v1/user</td>
-                <td id='counterPostUser'></td>
-            </tr>
-        </table>
-        <input type="button" value="getdata" onclick="getData()">
-
-
-        <h3>Press the post button below to add a user</h3>
-        <div id="testdiv"></div>
-        <input type="button" onclick=postUser() value="post user">
-
-        <h3>Enter a user id to get user information</h3>
-        <input type='text' id="userid" value="id here">
-        <input type="button" onclick=getUser() value="get user">
-
-        <div id="testdivUser">
-            <p id="user"></p>
-            <p id="username"></p>
-            <p id="password"></p>
+                <tr>
+                    <td>POST</td>
+                    <td>/API/v1/register</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/API/v1/login</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/API/v1/user/:userid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/API/v1/cat</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/API/v1/cat/:pictureid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/API/v1/user/:userid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/API/v1/leaderboard/:top</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td>/API/v1/comments/:pictureid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td>/API/v1/cat/comments/:pictureid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>/API/v1/cat/comments/:commentid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>DEL</td>
+                    <td>/API/v1/cat/comments/:commentid</td>
+                    <td id=''></td>
+                </tr>
+                <tr>
+                    <td>PUT</td>
+                    <td>/API/v1//vote/:pictureid</td>
+                    <td id=''></td>
+                </tr>
+            </table>
+            <!-- <input type="button" value="getdata" onclick="getData()"> -->
+    
+    
+            <!-- <h3>Press the post button below to add a user</h3>
+            <div id="testdiv"></div>
+            <input type="button" onclick=postUser() value="post user">
+    
+            <h3>Enter a user id to get user information</h3>
+            <input type='text' id="userid" value="id here">
+            <input type="button" onclick=getUser() value="get user">
+    
+            <div id="testdivUser">
+                <p id="user"></p>
+                <p id="username"></p>
+                <p id="password"></p>
+            </div> -->
         </div>
     </div>
+    
+    
     
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/index.js"></script>
