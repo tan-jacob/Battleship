@@ -27,18 +27,30 @@ let getOneCat = async () =>  {
     })
 }
 
-let postComment = async () => {
-    let data = {
-        comment : document.getElementById("comment").value,
-        pictureID : id,
-        userID : 1
+let inputValidator = (input) => {
+    if (input.trim() == "") {
+        alert("Comment cannot be blank. Please try again");
+        return false;
     }
-    const response = await axios({
-        method: 'POST',
-        url: localEndPointRoot + catURL + "/comments/" + id,
-        data: data
-    })
+    return true;
+}
 
-    window.location.href = `/Frontend/cat.html?id=${id}`;
+let postComment = async () => {
+    if (inputValidator(document.getElementById("comment").value)) {
+            let data = {
+                comment : document.getElementById("comment").value,
+                pictureID : id,
+                userID : 1
+        }
+        const response = await axios({
+            method: 'POST',
+            url: localEndPointRoot + catURL + "/comments/" + id,
+            data: data
+        })
+
+        window.location.href = `/Frontend/cat.html?id=${id}`;
+    }
+
+
  
 }
