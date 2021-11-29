@@ -13,7 +13,9 @@ const adminURL = '/api/v1/admin';
 const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
 
-const TOKEN_SECRET = process.env.TOKEN_SECRET;
+const TOKEN_SECRET = '314b391810080478941a2b1996a2028d9577c236d0069c236afd27b003a1c7d765d1557c0f176ea9247a6ea2853c681206b85122d15862eb729bc8747945e768';
+
+console.log(TOKEN_SECRET);
 
 const EXPIRY = 300;
 
@@ -48,10 +50,6 @@ db.promise = (sql) => {
             else { resolve(result); }
         })
     })
-}
-
-function generateAccessToken(username) {
-    return jwt.sign(username, TOKEN_SECRET, {expiresIn: '1800s'});
 }
 
 function authToken(req, res, next) {
@@ -96,79 +94,52 @@ app.post('/register', jsonParser, async (req, res) => {
     });
 });
 
-app.post(`/login`, jsonParser, async (req, res) => {
-    console.log(req.body.password);
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    let accessToken = '';
-    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
-    let promise = db.promise(sql)
-    .then((res) => {
-        console.log(res[0]);
-        if(res[0].length == 0) {
-            //user does not exist
-            res.send('user does not exist');
-        } else {
+app.post(`/login`, jsonParser, async (req, resLogin) => {
+    
+    // validate login fields
+    if (!(req.body.username && req.body.password)) {
+        res.status(400).send("Must input username and password");
+      }
 
-            bcrypt.compare(req.body.password, res[0].password, function(err, res) {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+    db.promise(sql)
+    .then((resProm) => {
+        console.log(resProm[0]);
+        if(resProm[0].length == 0) {
+            //user does not exist
+            resLogin.send('user does not exist');
+        } else {
+            bcrypt.compare(req.body.password, resProm[0].password, function(err, res) {
                 if (err){
                   throw err;
                 }
-                if (res)
-                    accessToken = jwt.sign({
-                        data: {
-                            userid: req.body.userID,
-                            name: req.body.name
-                        }
+                if (res) {
+                    let accessToken = jwt.sign({
+                        userid: resProm[0].userID,
+                        username: resProm[0].username,
+                        name: resProm[0].name
                     }, TOKEN_SECRET, {expiresIn: EXPIRY});
-                    res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+                    
+                    let user = {
+                        userid: resProm[0].userID,
+                        username: resProm[0].username,
+                        name: resProm[0].name
+                    }
+                    resLogin.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+                    resLogin.status(201).send(user);
                 } else {
                   // response is OutgoingMessage object that server response http request
-                  return response.json({success: false, message: 'passwords do not match'});
+                  return res.json({success: false, message: 'passwords do not match'});
                 }
-              });
-            
-            //console.log(accessToken);
-            
-
-            
+            });
         }
-        //console.log('cookie');
-        //res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-        //return promise;
     }).catch((err) => {
         console.log(err);
     })
     
-    // .finally(() => {
-    //     console.log('cookie');
-    //     //console.log(accessToken);
-    //     res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-    //     res.status(200).send({token: jwt.token});
-    //     //return promise;
-    // });
-    
-    //if username and password is correct => sent jwt
-    /*
-    let accessToken = jwt.sign({
-        data: {
-            userid: res[0].body.userID,
-            name: res[0].body.name
-        }
-    }, TOKEN_SECRET, {expiresIn: EXPIRY});
-    console.log(accessToken);
-    res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-    */
-   // res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
 
-    //res.end();
 })
-
-/* login token
-const token = generateAccessToken({ username: req.body.username });
-    res.json(token);
-    insert token into apikey table
-*/
-
 
 let counterGetUserID = 0;
 app.get(`${resource}/user/:userid`, function(req, res) {

@@ -1,5 +1,9 @@
 axios.defaults.withCredentials = true;
 
+const getCookieValue = (name) => (
+    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+)
+
 let login = async () => {
     let un = document.getElementById('username').value;
     let pw = document.getElementById('psw').value;
@@ -11,27 +15,19 @@ let login = async () => {
     axios.post(url, {
         username: un,
         password: pw,
+    }, {
+        withCredentials: true
+    }).then(res => {
+        console.log(res);
+        // let response = JSON.parse(res);
+        console.log(res.data);
+        document.cookie = `cookie1=${JSON.stringify(res.data)}; expires=Sun, 1 Jan 2023 00:00:00 UTC; path=/`
+        //testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
     });
 
-    // try {
-    //     let resp = await axios.post(url, {
-    //         username: un,
-    //         pasword: pw
-    //     });
-        
-    //     console.log(resp.data);
-        
-    //     // , {withCredentials: true}
-    //     //const token = await resp.data.json();
-    
-    //     //set token in cookie
-    //     //document.cookie = `token=${token}`;
-    // } catch (err) {
-    //     // Handle Error Here
-    //     console.error(err);
-    // }
+    console.log(JSON.parse(getCookieValue('userInfo')));
 };
 
     
