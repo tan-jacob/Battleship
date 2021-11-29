@@ -10,7 +10,7 @@ const lboardurl = '/leaderboard/'
 const catURL = '/api/v1/cat';
 
  showLeaderboard = () => {
-    xhttp.open(GET, localEndPointRoot + lboardurl +"10", true);
+    xhttp.open(GET, localEndPointRoot + resource + lboardurl +"10", true);
     xhttp.send();
     xhttp.onreadystatechange = function() { 
         if(this.readyState == 4 && this.status == 200) { 
