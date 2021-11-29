@@ -4,8 +4,8 @@ const getCookieValue = (name) => (
 
 let userInfo;
 
-if (getCookieValue('userInfo') != undefined || getCookieValue('userInfo') != null) {
-    userInfo = JSON.parse(getCookieValue('userInfo'));
+if (getCookieValue('cookie1') != undefined || getCookieValue('cookie1') != null) {
+    userInfo = JSON.parse(getCookieValue('cookie1'));
 }
 
 console.log(userInfo);
