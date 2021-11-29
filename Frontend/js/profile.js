@@ -17,12 +17,12 @@ axios.get(url).then(res => {
 
         let editButton = document.createElement('input');
         editButton.type = 'button';
-        editButton.onclick = editComment(res.data[i].commentID);
+        editButton.onclick = function() { editComment(res.data[i].commentID); }
         editButton.value = "Edit Comment";
 
         let deleteButton = document.createElement('input');
         deleteButton.type = 'button';
-        deleteButton.onclick = deleteComment(res.data[i].commentID);
+        deleteButton.onclick = function() { deleteComment(res.data[i].commentID); }
         deleteButton.value = "Delete Comment";
 
         div.appendChild(p);
