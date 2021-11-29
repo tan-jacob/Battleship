@@ -11,7 +11,12 @@
 
      <!-- Compiled and minified JavaScript -->
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-     
+     <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          var elems = document.querySelectorAll('.sidenav');
+          var instances = M.Sidenav.init(elems, options);
+        });
+      </script>
     <title>Cat Leaderboard</title>
     <!-- This will be the landing page for the app that displays the top 10 cats with the most votes -->
 </head>
@@ -44,12 +49,7 @@
         </table>
     </div>  
 </body>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems, options);
-  });
-</script>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="js/materialize.min.js"></script>
 <script src="js/leaderboard.js"></script>
