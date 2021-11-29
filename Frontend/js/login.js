@@ -26,7 +26,7 @@ let login = async () => {
     }).catch(function(error) {
         console.log(error);
     });
-
+    window.location.href = `/Frontend/game.html`
     console.log(JSON.parse(getCookieValue('userInfo')));
 };
 

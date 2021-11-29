@@ -36,11 +36,12 @@ let inputValidator = (input) => {
 }
 
 let postComment = async () => {
+    console.log('userinfo',userInfo);
     if (inputValidator(document.getElementById("comment").value)) {
             let data = {
                 comment : document.getElementById("comment").value,
                 pictureID : id,
-                userID : 1
+                userID : userInfo.userID
         }
         const response = await axios({
             method: 'POST',

@@ -130,7 +130,7 @@ app.post(`/login`, jsonParser, async (req, resLogin) => {
                     resLogin.status(201).send(user);
                 } else {
                   // response is OutgoingMessage object that server response http request
-                  return res.json({success: false, message: 'passwords do not match'});
+                  return resLogin.json({success: false, message: 'passwords do not match'});
                 }
             });
         }
