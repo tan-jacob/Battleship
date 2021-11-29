@@ -112,14 +112,14 @@ app.post(`/login`, jsonParser, async (req, res) => {
     })
 
     // if username and password is correct => sent jwt
-    let accessToken = jwt.sign({
-        data: {
-            res[0].userid,
-            res[0].name
-        }
-    }, TOKEN_SECRET, {expiresIn: 120});
+    // let accessToken = jwt.sign({
+    //     data: {
+    //         res[0].userid,
+    //         res[0].name
+    //     }
+    // }, TOKEN_SECRET, {expiresIn: 120});
 
-    res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+    // res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
 })
 
 /* login token
