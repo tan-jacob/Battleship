@@ -21,7 +21,7 @@ let login = async () => {
         console.log(res);
         // let response = JSON.parse(res);
         console.log(res.data);
-        document.cookie = `cookie1=${JSON.stringify(res.data)}; expires=Sun, 1 Jan 2023 00:00:00 UTC; path=/`
+        document.cookie = `userInfo=${JSON.stringify(res.data)}; expires=Sun, 1 Jan 2023 00:00:00 UTC; path=/`
         //testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
