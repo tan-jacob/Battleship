@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
+=======
+require('dotenv').config();
+>>>>>>> a88d28af0ba594d0a80ade778f19e2c82a2c8e62
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
@@ -130,7 +134,7 @@ app.post(`/login`, jsonParser, async (req, resLogin) => {
                     resLogin.status(201).send(user);
                 } else {
                   // response is OutgoingMessage object that server response http request
-                  return res.json({success: false, message: 'passwords do not match'});
+                  return resLogin.json({success: false, message: 'passwords do not match'});
                 }
             });
         }
