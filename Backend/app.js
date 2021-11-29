@@ -1,12 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const mysql = require('mysql');
+const jwt = require('jsonwebtoken');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
+
 const PORT = process.env.PORT || 8888;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
-const bodyParser = require('body-parser')
 const catURL = '/api/v1/cat';
 const catAPI = 'https://thatcopy.pw/catapi/rest/';
+
+const TOKEN_SECRET = process.env.TOKEN_SECRET;
+const EXPIRY = 300;
+
 const app = express();
 
 const db = mysql.createConnection({
@@ -16,7 +24,12 @@ const db = mysql.createConnection({
     database: 'isaproject',
 });
 
-var jsonParser = bodyParser.json()
+db.connect((err) => {
+    if(err) { throw err; }
+    console.log("mysql: connected");
+});
+
+var jsonParser = bodyParser.json();
 
 app.use(function (req, res, next){
     res.header('Access-Control-Allow-Origin', '*');
@@ -24,6 +37,97 @@ app.use(function (req, res, next){
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
     next();
 });
+
+db.promise = (sql) => {
+    return new Promise((resolve, reject) => {
+        db.query(sql, (err, result) => {
+            if (err) { reject(new Error()); }
+            else { resolve(result); }
+        })
+    })
+}
+
+function generateAccessToken(username) {
+    return jwt.sign(username, TOKEN_SECRET, {expiresIn: '1800s'});
+}
+
+function authToken(req, res, next) {
+    const authHeader = req.headers['auth'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.status(401).send();
+
+    jwt.verify(token, TOKEN_SECRET, (err, user) => {
+        console.log(err);
+
+        if (err) return res.status(403).send();
+
+        req.user = user
+
+        next();
+    });
+}
+
+app.post('/register', jsonParser, async (req, res) => {
+
+    console.log(req.body);
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    console.log(hashedPassword);
+   
+    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+    db.promise(sql)
+    .then((res) => {
+        console.log(res);
+        let sql;
+        if (res.length == 0) {
+            sql = `INSERT INTO users (name, username, password) VALUES ('${req.body.name}', '${req.body.username}', '${hashedPassword}')`;
+            return db.promise(sql);
+        } else {
+            throw 'USERNAME TAKEN';
+        }
+    }).then((res) => {
+        console.log(res.message);
+    }).catch((err) => {
+        console.log(err);
+    });
+});
+
+app.post(`/login`, jsonParser, async (req, res) => {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+    db.promise(sql)
+    .then((res) => {
+        console.log(res[0]);
+        if(res[0].length == 0) {
+            //user does not exist
+            res.send('user does not exist');
+        } else {
+            sql = `SELECT * FROM users WHERE (username = '${req.body.username}' AND password = '${req.body.password}')`;
+            return db.promise(sql);
+        }
+    }).catch((err) => {
+        console.log(err);
+    })
+
+    // if username and password is correct => sent jwt
+    // let accessToken = jwt.sign({
+    //     data: {
+    //         res[0].userid,
+    //         res[0].name
+    //     }
+    // }, TOKEN_SECRET, {expiresIn: 120});
+
+    // res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+})
+
+/* login token
+const token = generateAccessToken({ username: req.body.username });
+    res.json(token);
+    insert token into apikey table
+*/
+
 
 let counterGetUserID = 0;
 app.get(`${resource}/user/:userid`, function(req, res) {
