@@ -24,3 +24,9 @@ function register() {
     //window.location.href = `/Frontend/game.html`
     alert("Registered!")
 }
+
+let registerButton = () => {
+    register().then( () => {
+        setTimeout(window.location.href = `/login.html`, 2000);
+    })
+}

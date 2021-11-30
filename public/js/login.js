@@ -31,4 +31,9 @@ let login = async () => {
     alert("Logged in!");
 };
 
+let loginButton = () => {
+    login().then( () => {
+        setTimeout(window.location.href = `/game.html`, 2000);
+    })
+}
     
