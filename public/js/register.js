@@ -4,7 +4,6 @@ function register() {
     let pw = document.getElementById('psw').value.trim();
     let n = document.getElementById('name').value.trim();
 
-    console.log(`username ${un}, password ${pw} name ${n}`); 
 
     if (un == null || un == "", pw == null || pw == "", n == null || n == ""){
         alert("Don't leave any values empty!");
@@ -24,4 +23,10 @@ function register() {
     });
     //window.location.href = `/Frontend/game.html`
     alert("Registered!")
+}
+
+let registerButton = () => {
+    register().then( () => {
+        setTimeout(window.location.href = `/login.html`, 2000);
+    })
 }

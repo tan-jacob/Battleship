@@ -28,7 +28,7 @@ let getOneCat = async () =>  {
     let comments = response.data;
     console.log(comments);
     comments.forEach(obj => {
-        commentDiv.innerHTML += `</br> ${obj.name}: ${obj.comment}`;
+        commentDiv.innerHTML += `</br> ${obj.username}: ${obj.comment}`;
     })
 }
 
@@ -53,11 +53,17 @@ let postComment = async () => {
             method: 'POST',
             url: localEndPointRoot + catURL + "/comments/" + id,
             data: data
-        }).finally(window.location.href = `/Frontend/cat.html?id=${id}`)
+        })/*.finally(window.location.href = `/cat.html?id=${id}`)*/
 
         //window.location.href = `/Frontend/cat.html?id=${id}`;
     }
 
 
  
+}
+
+let postCommentButton = () => {
+     postComment().then( () => {
+         setTimeout(window.location.href = `/cat.html?id=${id}`, 2000);
+     })
 }

@@ -8,7 +8,7 @@ let login = async () => {
     let un = document.getElementById('username').value;
     let pw = document.getElementById('psw').value;
 
-    console.log(`username ${un}, password ${pw}`); 
+    //console.log(`username ${un}, password ${pw}`); 
 
     let url = `https://inyoungkang.me/login`;
 
@@ -19,16 +19,21 @@ let login = async () => {
     }, {
         withCredentials: true
     }).then(res => {
-        console.log(res);
+       // console.log(res);
         // let response = JSON.parse(res);
-        console.log(res.data);
+       // console.log(res.data);
         document.cookie = `cookie1=${JSON.stringify(res.data)}; expires=Sun, 1 Jan 2023 00:00:00 UTC; path=/`;
         //testdiv.innerHTML = response;
     }).catch(function(error) {
         console.log(error);
     });
-    console.log(JSON.parse(getCookieValue('cookie1')));
+    //console.log(JSON.parse(getCookieValue('cookie1')));
     alert("Logged in!");
 };
 
+let loginButton = () => {
+    login().then( () => {
+        setTimeout(window.location.href = `/game.html`, 2000);
+    })
+}
     

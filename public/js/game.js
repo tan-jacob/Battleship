@@ -13,7 +13,7 @@ let b2 = document.getElementById('btn2');
 
 let getCat = async () => {
     const response = await axios.get(localEndPointRoot + catURL + '/catorcatappapikey');
-    console.log(response);
+    //console.log(response);
     cat1.src = response.data.picture1URL;
     cat1.dataset.catid = response.data.picture1ID;
     cat2.src = response.data.picture2URL;

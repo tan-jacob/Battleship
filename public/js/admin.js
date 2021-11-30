@@ -31,7 +31,7 @@ let login = async () => {
     console.log(JSON.parse(getCookieValue('cookie1')));
 };
 
-function getResource() {
+let getResource = () => {
     let url = `https://inyoungkang.me/resource/myadminkey`;
 
     axios.get(url)
