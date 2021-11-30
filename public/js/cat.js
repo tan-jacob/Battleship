@@ -58,8 +58,10 @@ let postComment = async () => {
         //window.location.href = `/Frontend/cat.html?id=${id}`;
     }
 
-    let postCommentButton = async () => {
-        postComment().then(window.location.href = `/cat.html?id=${id}`);
-    }
+
  
+}
+
+let postCommentButton = async () => {
+    postComment().then(window.location.href = `/cat.html?id=${id}`);
 }
