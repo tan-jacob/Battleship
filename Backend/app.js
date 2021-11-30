@@ -8,6 +8,10 @@ const bodyParser = require('body-parser');
 //const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+const swaggerJsdoc = require("swagger-jsdoc");
+
 const PORT = process.env.PORT || 9000;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
@@ -20,10 +24,17 @@ const EXPIRY = 300;
 
 const app = express();
 
+// const db = mysql.createConnection({
+//     host: "localhost",
+//     user: "root",
+//     password: "ISATeamD5",
+//     database: 'isaproject',
+// });
+
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "ISATeamD5",
+    password: "",
     database: 'isaproject',
 });
 
@@ -50,6 +61,8 @@ db.promise = (sql) => {
         })
     })
 }
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //get all counters to be viewed in the admin.html page
 app.get('/resource/:apikey', function(req, res) {
@@ -220,7 +233,7 @@ app.post(`/login`, jsonParser, async (req, resLogin) => {
                             resLogin.status(201).send(user);
                         } else {
                         // response is OutgoingMessage object that server response http request
-                        return resLogin.json({success: false, message: 'passwords do not match'});
+                        return resLogin.status(400).json({success: false, message: 'passwords do not match'});
                         }
                     });
                 }

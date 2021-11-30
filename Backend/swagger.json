@@ -1,0 +1,562 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the API for our Cat Voting Game",
+    "version": "1.0.0",
+    "title": "This or That with Cats",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "inyoungkang.me",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Admin",
+      "description": "Admin Operations"
+    },
+    {
+      "name": "Authentication",
+      "description": "Operations about Authentication"
+    },
+    {
+      "name": "Cats",
+      "description": "Operations about Cat Information"
+    },
+    {
+      "name": "Comments",
+      "description": "Operations about Comments"
+    },
+    {
+      "name": "Leaderboard",
+      "description": "Operations about Leaderboard"
+    },
+    {
+      "name": "User",
+      "description": "Operations about users"
+    },
+    {
+      "name": "Votes",
+      "description": "Operations about Votes"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/login": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/register": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "The user name for login",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "The password for login in clear text",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/adminlogin": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "summary": "gets all endpoint request counts",
+        "description": "This can only be done by the logged in admin.",
+        "operationId": "createUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "The user name for login",
+            "required": true,
+            "schema" : {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "body",
+            "description": "The password for login",
+            "required": true,
+            "schema" : {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Admin"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/user/:userid": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Retrieves user information",
+        "description": "This can only be done by the current logged in user.",
+        "operationId": "getUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user information",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/cats/:apikey": {
+      "get": {
+        "tags": [
+          "Cats"
+        ],
+        "summary": "Get 2 random cats",
+        "description": "Gets 2 random cats from the cat api",
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],"parameters": [
+          {
+          "name": "apikey",
+          "in": "path",
+          "description": "valid apikey",
+          "required": true,
+          "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/cat/:pictureid": {
+      "get": {
+        "tags": [
+          "Cats"
+        ],
+        "summary": "Retrieve a cat by picture ID",
+        "description": "Retrieve a cat by picture ID",
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          "name": "pictureid",
+          "in": "path",
+          "description": "ID of picture that is being retrieved",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Cat"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/cat/comments/:pictureid": {
+      "get": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "get comments of cat by picture id",
+        "description": "get comments of cat by picture id",
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          "name": "pictureid",
+          "in": "path",
+          "description": "ID of picture to retrieve comments",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/cat/comments/:commentid": {
+      "put": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "update comment of cat by commentid",
+        "description": "update comment of cat by commentid",
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          "name": "commentid",
+          "in": "path",
+          "description": "ID of comment that is being updated",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Comment"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/cat/comments/delete/:commentid": {
+      "delete": {
+        "tags": [
+          "Comments"
+        ],
+        "summary": "Delete comment of cat by commentid",
+        "description": "Delete comment of cat by commentid",
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          "name": "commentid",
+          "in": "path",
+          "description": "ID of comment that is being deleted",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/cat/vote/:pictureid": {
+      "put": {
+        "tags": [
+          "Votes"
+        ],
+        "summary": "Updates the votes value for a cat",
+        "description": "Updates the votes value for a cat",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+          "name": "pictureid",
+          "in": "path",
+          "description": "ID of picture that is being voted on",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Votes"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    },
+    "/leaderboard/:top": {
+      "get": {
+        "tags": [
+          "Leaderboard"
+        ],
+        "summary": "Get the top n cats by votes",
+        "description": "get top n cats by votes",
+        "parameters": [
+          {
+          "name": "top",
+          "in": "path",
+          "description": "Number of items to return",
+          "required": true,
+          "type": "integer",
+          "format": "int64"
+          }
+        ],
+        "operationId": "getCat",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Leaderboard"
+            }
+          },
+          "400": {
+            "description": "Invalid"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "userid": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "commentID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "userID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "pictureID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        }
+      }
+    },
+    "Cat": {
+      "type": "object",
+      "properties": {
+        "pictureID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "comments": {
+          "type": "string"
+        },
+        "userID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Admin": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "apikey": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Votes": {
+      "type": "object",
+      "properties": {
+        "votes": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "pictureid": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}
