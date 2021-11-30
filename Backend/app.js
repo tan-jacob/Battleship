@@ -24,19 +24,13 @@ const EXPIRY = 300;
 
 const app = express();
 
-// const db = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "ISATeamD5",
-//     database: 'isaproject',
-// });
-
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "ISATeamD5",
     database: 'isaproject',
 });
+
 
 db.connect((err) => {
     if(err) { throw err; }
