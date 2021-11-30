@@ -1,6 +1,6 @@
 //this will be how the leaderboard is generated
 
-function showLeaderboard() {
+let showLeaderboard = () => {
     let lb = document.getElementById("leaderboard");
 
 
