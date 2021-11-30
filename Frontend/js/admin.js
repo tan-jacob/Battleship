@@ -6,7 +6,7 @@ let login = async () => {
 
     console.log(`username ${un}, password ${pw}`); 
 
-    let url = `http://localhost:8888/adminlogin`;
+    let url = `https://inyoungkang.me/adminlogin`;
 
     await axios.post(url, {
         username: un,
@@ -32,7 +32,7 @@ let login = async () => {
 };
 
 function getResource() {
-    let url = `http://localhost:8888/resource/myadminkey`;
+    let url = `https://inyoungkang.me/resource/myadminkey`;
 
     axios.get(url)
     .then(res => {

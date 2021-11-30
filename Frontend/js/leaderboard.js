@@ -4,7 +4,7 @@ function showLeaderboard() {
     let lb = document.getElementById("leaderboard");
 
 
-    let url = 'http://localhost:8888/api/v1/leaderboard/10/catorcatappapikey';
+    let url = 'https://inyoungkang.me/api/v1/leaderboard/10/catorcatappapikey';
 
     axios.get(url).then(res => {
         console.log(res.data);
