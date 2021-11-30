@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 //const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 
-const PORT = process.env.PORT || 8888;
+const PORT = process.env.PORT || 9000;
 const resource = '/api/v1';
 const adminURL = '/api/v1/admin';
 const catURL = '/api/v1/cat';
@@ -23,7 +23,7 @@ const app = express();
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "",
+    password: "ISATeamD5",
     database: 'isaproject',
 });
 
@@ -35,7 +35,7 @@ db.connect((err) => {
 var jsonParser = bodyParser.json();
 
 app.use(function (req, res, next){
-    res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+    res.header('Access-Control-Allow-Origin', 'https://inyoungkang.me');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Authorization, Content-Length, X-Requested-With');
