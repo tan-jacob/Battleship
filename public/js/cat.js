@@ -2,7 +2,7 @@ const xhttp = new XMLHttpRequest();
 const GET = 'GET';
 const POST = 'POST';
 const endPointRoot = 'hostedip';
-const localEndPointRoot = 'https://inyoungkang.me/'
+const localEndPointRoot = 'https://inyoungkang.me'
 const catAPI = 'https://thatcopy.pw/catapi/restId/';
 const catURL = '/api/v1/cat';
 
