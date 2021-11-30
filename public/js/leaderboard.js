@@ -29,7 +29,7 @@ function showLeaderboard() {
 
 viewCat = async (id) => {
     console.log("click view cat");
-    window.location.href = `/Frontend/cat.html?id=${id}`;
+    window.location.href = `/cat.html?id=${id}`;
 }
 
 
