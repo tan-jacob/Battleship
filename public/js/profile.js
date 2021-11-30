@@ -32,7 +32,7 @@ axios.get(url).then(res => {
         div.appendChild(p);
         div.appendChild(deleteButton);
 
-        //commentsDiv.appendChild(div);
+        commentsDiv.appendChild(div);
     }
     
 }).catch(function(error) {
@@ -41,11 +41,11 @@ axios.get(url).then(res => {
 
 function deleteComment(comID) {
     let url = `https://inyoungkang.me/api/v1/cat/comments/delete/${comID}/catorcatappapikey`;
-    //console.log(comID);
+    console.log(comID);
 
     axios.delete(url).then(res => {
         let response = JSON.parse(res);
-        console.log(response);
+        //console.log(response);
         alert("your comment has been deleted");
     }).catch(function(error) {
         console.log(error);
