@@ -1,7 +1,7 @@
 let commentsDiv = document.getElementById('comdiv');
 
 if (userInfo != undefined) {
-    document.getElementById('profile').style = block;
+    document.getElementById('profile').style = "block";
     document.getElementById('username').innerHTML = `${userInfo.username}'s Profile!`;
 } else {
     window.location.href = `/register.html`;

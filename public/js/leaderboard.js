@@ -7,7 +7,7 @@ function showLeaderboard() {
     let url = 'https://inyoungkang.me/api/v1/leaderboard/10/catorcatappapikey';
 
     axios.get(url).then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         let position = 1;
         
         res.data.forEach(element => {
@@ -28,7 +28,7 @@ function showLeaderboard() {
 }
 
 viewCat = async (id) => {
-    console.log("click view cat");
+    //console.log("click view cat");
     window.location.href = `/cat.html?id=${id}`;
 }
 

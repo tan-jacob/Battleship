@@ -53,7 +53,7 @@ let postComment = async () => {
             method: 'POST',
             url: localEndPointRoot + catURL + "/comments/" + id,
             data: data
-        }).finally(window.location.href = `/Frontend/cat.html?id=${id}`)
+        }).finally(window.location.href = `/cat.html?id=${id}`)
 
         //window.location.href = `/Frontend/cat.html?id=${id}`;
     }
