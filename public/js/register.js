@@ -12,7 +12,7 @@ function register() {
       }
 
 
-    let url = `http://localhost:8888/register`;
+    let url = `https://inyoungkang.me/register`;
 
     axios.post(url, {
         username: un,

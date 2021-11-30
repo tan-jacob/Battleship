@@ -1,0 +1,26 @@
+table {
+    font-size: 4.2vh;
+    text-align: left;
+}
+
+#leaderboard {
+    margin: auto;
+    padding-left: 3vw;
+}
+
+#user {
+    transition-duration: 0.3s;
+}
+
+#userPositon, #username, #userScore {
+    padding-right: 3vw;
+    transition-duration: 0.3s;
+}
+
+#position, #name, #score {
+    padding-right: 3vw;
+}
+
+#name {
+    margin-left: 3vh;
+}

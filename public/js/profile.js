@@ -2,7 +2,7 @@ document.getElementById('username').innerHTML = `${userInfo.username}'s Profile!
 
 let commentsDiv = document.getElementById('comdiv');
 
-let url = `http://localhost:8888/api/v1/cat/comments/user/${userInfo.userid}/catorcatappapikey`;
+let url = `https://inyoungkang.me/api/v1/cat/comments/user/${userInfo.userid}/catorcatappapikey`;
 
 axios.get(url).then(res => {
     
@@ -35,7 +35,7 @@ axios.get(url).then(res => {
 });
 
 function deleteComment(comID) {
-    let url = `http://localhost:8888/api/v1/cat/comments/delete/${comID}/catorcatappapikey`;
+    let url = `https://inyoungkang.me/api/v1/cat/comments/delete/${comID}/catorcatappapikey`;
     console.log(comID);
 
     axios.delete(url).then(res => {
