@@ -2,6 +2,12 @@ document.getElementById('username').innerHTML = `${userInfo.username}'s Profile!
 
 let commentsDiv = document.getElementById('comdiv');
 
+if (userInfo.userid != null || userInfo.userid != undefined) {
+    document.getElementById('profile').style = block;
+} else {
+    window.location.href = `/register.html`;
+}
+
 let url = `https://inyoungkang.me/api/v1/cat/comments/user/${userInfo.userid}/catorcatappapikey`;
 
 axios.get(url).then(res => {

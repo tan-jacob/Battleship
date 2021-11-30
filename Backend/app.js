@@ -284,11 +284,6 @@ app.post(`/adminlogin`, jsonParser, async (req, resLogin) => {
                             throw err;
                             }
                             if (res) {
-                                let accessToken = jwt.sign({
-                                    userid: resProm[0].userID,
-                                    username: resProm[0].username,
-                                    name: resProm[0].name
-                                }, TOKEN_SECRET, {expiresIn: EXPIRY});
                                 
                                 let user = {
                                     userid: resProm[0].userID,
