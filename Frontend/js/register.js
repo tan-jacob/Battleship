@@ -11,15 +11,17 @@ function register() {
         return false;
       }
 
-    let url = `http://localhost:8888/api/v1/register`;
+
+    let url = `http://localhost:8888/register`;
 
     axios.post(url, {
         username: un,
         password: pw,
-        name: n
+        name: n,
+        apikey: 'catorcatappapikey'
     }).catch(function(error) {
         console.log(error);
     });
     //window.location.href = `/Frontend/game.html`
-
+    alert("Registered!")
 }

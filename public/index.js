@@ -1,76 +1,34 @@
-const http = require('http')
-const fs = require('fs')
+const xhttp = new XMLHttpRequest();
+const GET = 'GET';
+const POST = 'POST';
+const endPointRoot = 'hostedip';
+const localEndPointRoot = 'http://localhost:8888'
+const catAPI = 'https://thatcopy.pw/catapi/rest/';
+const catURL = '/api/v1/cat';
 
+let cat1 = document.getElementById('cat1');
+let cat2 = document.getElementById('cat2');
+let b1 = document.getElementById('btn1');
+let b2 = document.getElementById('btn2');
 
+let getCat = async () => {
+    const response = await axios.get(localEndPointRoot + catURL + '/catorcatappapikey');
+    console.log(response);
+    cat1.src = response.data.picture1URL;
+    cat1.dataset.catid = response.data.picture1ID;
+    cat2.src = response.data.picture2URL;
+    cat2.dataset.catid = response.data.picture2ID;
+    b1.onclick = function () {vote(response.data.picture1ID);};
+    b2.onclick = function () {vote(response.data.picture2ID);};
 
-function postUser() {
-    let testdiv = document.getElementById('testdiv');
-
-    let url = 'https://inyoungkang.me/api/v1/user/';
-
-    axios.post(url, {
-        name: "jane doe",
-        username: 'hello',
-        password: 'testse'
-    }).then(res => {
-        let response = JSON.parse(res);
-        testdiv.innerHTML = response.name;
-    });
+    return response;
 }
 
-function getUser() {
-    let userid = document.getElementById('userid').value;
-
-    let url = `https://inyoungkang.me/api/v1/user/` + userid;
-    console.log(url);
-    axios.get(url
-        // , {
-        // method: 'get',
-        // headers: {
-        //     'Content-Type': 'application/json'
-        // }
-    ).then((res) => {
-        //let response = JSON.parse(res);
-        document.getElementById('user').innerHTML = "name: " + res.data[0].name;
-        console.log(res.data[0]);
-    }).catch(err => {
-        if (err.response) {
-            document.getElementById('user').innerHTML = "User not found!";
-        }
-    });
+let vote = async (num) => {
+    console.log("vote for cat", num);
+    let url = localEndPointRoot + catURL + '/vote/' + num + '/catorcatappapikey'
+    const response = await axios.put(url);
+    getCat()
 }
 
-function login() {
-    let username = document.getElementById('username');
-    let password = document.getElementById('password');
-
-    if ((username.value == "admin") && (password.value == "1234abcd")) {
-        document.getElementById('logindiv').style.display = 'none';
-        document.getElementById('datadiv').style.display = "block";
-    }   
-}
-
-function getData() {
-    let url = 'https://inyoungkang.me/api/v1/admin/';
-    axios.get(url, {
-        method: 'get',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then((res) => {
-        //let response = JSON.parse(res);
-        document.getElementById('counterGetUser').innerHTML = res.data.get;
-        document.getElementById('counterPostUser').innerHTML = res.data.post;
-        console.log(res.data);
-    });
-}
-
-
-//window.onload = getData;
-
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'content-type': 'text/html' })
-    fs.createReadStream('index.html').pipe(res)
-  })
-  
-  server.listen(process.env.PORT || 3000)
+window.onload(getCat());

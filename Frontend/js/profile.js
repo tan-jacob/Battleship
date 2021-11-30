@@ -2,7 +2,7 @@ document.getElementById('username').innerHTML = `${userInfo.username}'s Profile!
 
 let commentsDiv = document.getElementById('comdiv');
 
-let url = `http://localhost:8888/api/v1/cat/comments/user/${userInfo.userid}`;
+let url = `http://localhost:8888/api/v1/cat/comments/user/${userInfo.userid}/catorcatappapikey`;
 
 axios.get(url).then(res => {
     
@@ -12,21 +12,19 @@ axios.get(url).then(res => {
     for (i = 0; i < data.length; i++) {
         let p = document.createElement('p');
         let div =document.createElement('div');
+        let cID = res.data[i].commentID;
+        let comm = res.data[i].comment;
+        let pID = res.data[i].pictureID;
+        console.log("cID value",cID);
 
-        p.innerHTML = `Comment made on picture ${res.data[i].pictureID}: ${res.data[i].comment}`;
+        p.innerHTML = `Comment made on Cat #${pID}:  ${comm}`;
+        console.log(res.data[i].commentID);
 
-        let editButton = document.createElement('input');
-        editButton.type = 'button';
-        editButton.onclick = function() { editComment(res.data[i].commentID); }
-        editButton.value = "Edit Comment";
-
-        let deleteButton = document.createElement('input');
-        deleteButton.type = 'button';
-        deleteButton.onclick = function() { deleteComment(res.data[i].commentID); }
-        deleteButton.value = "Delete Comment";
+        let deleteButton = document.createElement('button');
+        deleteButton.onclick = function() { deleteComment(cID); }
+        deleteButton.innerHTML = "Delete comment"
 
         div.appendChild(p);
-        div.appendChild(editButton);
         div.appendChild(deleteButton);
 
         commentsDiv.appendChild(div);
@@ -36,16 +34,14 @@ axios.get(url).then(res => {
     console.log(error);
 });
 
-function editComment(comID) {
-
-}
-
 function deleteComment(comID) {
-    let url = `http://localhost:8888/api/v1/cat/comments/delete/${comID}`;
+    let url = `http://localhost:8888/api/v1/cat/comments/delete/${comID}/catorcatappapikey`;
+    console.log(comID);
 
     axios.delete(url).then(res => {
         let response = JSON.parse(res);
         console.log(response);
+        alert("your comment has been deleted");
     }).catch(function(error) {
         console.log(error);
     });

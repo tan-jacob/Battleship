@@ -10,7 +10,7 @@
     <title>Admin</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id = 'logindiv'>
         <h2>Admin Page</h2>
         <div style="display: block" id="logindiv">
             <label>Admin Username: </label>
@@ -22,99 +22,24 @@
 
     </div> 
 </br>
-    <div id ="endpointDivs"class="container">
+    <div id ="endpointDivs" style="display: none" class="container">
+        <h2>Admin Page</h2>
         <div style="display: block" id="datadiv"> <!--change back to none-->
-            <table>
+            <table id='maintable'>
                 <tr>
                     <th>Method</th>
                     <th>Endpoint</th>
                     <th>Request</th>
                 </tr>
-    
-                <tr>
-                    <td>POST</td>
-                    <td>/API/v1/register</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>POST</td>
-                    <td>/API/v1/login</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>GET</td>
-                    <td>/API/v1/user/:userid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>GET</td>
-                    <td>/API/v1/cat</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>GET</td>
-                    <td>/API/v1/cat/:pictureid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>POST</td>
-                    <td>/API/v1/user/:userid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>GET</td>
-                    <td>/API/v1/leaderboard/:top</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>GET</td>
-                    <td>/API/v1/comments/:pictureid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>POST</td>
-                    <td>/API/v1/cat/comments/:pictureid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>PUT</td>
-                    <td>/API/v1/cat/comments/:commentid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>DEL</td>
-                    <td>/API/v1/cat/comments/:commentid</td>
-                    <td id=''></td>
-                </tr>
-                <tr>
-                    <td>PUT</td>
-                    <td>/API/v1//vote/:pictureid</td>
-                    <td id=''></td>
-                </tr>
             </table>
-            <!-- <input type="button" value="getdata" onclick="getData()"> -->
-    
-    
-            <!-- <h3>Press the post button below to add a user</h3>
-            <div id="testdiv"></div>
-            <input type="button" onclick=postUser() value="post user">
-    
-            <h3>Enter a user id to get user information</h3>
-            <input type='text' id="userid" value="id here">
-            <input type="button" onclick=getUser() value="get user">
-    
-            <div id="testdivUser">
-                <p id="user"></p>
-                <p id="username"></p>
-                <p id="password"></p>
-            </div> -->
         </div>
     </div>
     
     
     
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/cookie.js"></script>
+    <script src="js/admin.js"></script>
 </body>
 </html>
 

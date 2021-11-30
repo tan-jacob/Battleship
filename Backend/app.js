@@ -51,300 +51,665 @@ db.promise = (sql) => {
     })
 }
 
-function authToken(req, res, next) {
-    const authHeader = req.headers['auth'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (token == null) return res.status(401).send();
-
-    jwt.verify(token, TOKEN_SECRET, (err, user) => {
-        console.log(err);
-
-        if (err) return res.status(403).send();
-
-        req.user = user
-
-        next();
-    });
-}
-
-app.post(`${resource}/register`, jsonParser, async (req, res) => {
-
-    console.log(req.body);
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-    console.log(hashedPassword);
-   
-    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
-    db.promise(sql)
-    .then((res) => {
-        console.log(res);
-        let sql;
-        if (res.length == 0) {
-            sql = `INSERT INTO users (name, username, password) VALUES ('${req.body.name}', '${req.body.username}', '${hashedPassword}')`;
-            return db.promise(sql);
+//get all counters to be viewed in the admin.html page
+app.get('/resource/:apikey', function(req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 13`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
         } else {
-            throw 'USERNAME TAKEN';
+            //res.status(201).send("Success");
         }
-    }).then((res) => {
-        console.log(res.message);
+        console.log("1 stat updated");
+    });
+
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+
+            if (req.params.apikey == "myadminkey") {
+                let sql = `SELECT * FROM resource`;
+                db.query(sql, function(err, result) {
+                    if (err) {
+                        res.status(404).send("Error: " + err.message);
+                        throw err;
+                    } else {
+                        res.status(201).send(result);
+                    }
+                    console.log("1 stat updated");
+                });
+            } else {
+                res.status(404).send("Key does not have access");
+            }
+            
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
     }).catch((err) => {
-        console.log(err);
+        console.log("api key errors" + err);
     });
 });
 
-app.post(`/login`, jsonParser, async (req, resLogin) => {
-    
-    // validate login fields
-    if (!(req.body.username && req.body.password)) {
-        res.status(400).send("Must input username and password");
-      }
+//User registration
+app.post(`/register`, jsonParser, (req, res) => {
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
-    db.promise(sql)
-    .then((resProm) => {
-        console.log(resProm[0]);
-        if(resProm[0].length == 0) {
-            //user does not exist
-            resLogin.send('user does not exist');
+    console.log(req.body.apikey);
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 1`;
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
         } else {
-            bcrypt.compare(req.body.password, resProm[0].password, function(err, res) {
-                if (err){
-                  throw err;
-                }
-                if (res) {
-                    let accessToken = jwt.sign({
-                        userid: resProm[0].userID,
-                        username: resProm[0].username,
-                        name: resProm[0].name
-                    }, TOKEN_SECRET, {expiresIn: EXPIRY});
-                    
-                    let user = {
-                        userid: resProm[0].userID,
-                        username: resProm[0].username,
-                        name: resProm[0].name
-                    }
-                    resLogin.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-                    resLogin.status(201).send(user);
-                } else {
-                  // response is OutgoingMessage object that server response http request
-                  return resLogin.json({success: false, message: 'passwords do not match'});
-                }
-            });
+            //res.status(201).send("Success");
         }
-    }).catch((err) => {
-        console.log(err);
-    })
-    
+        console.log("1 stat updated");
+    });
 
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.body.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            console.log("req.body" + req.body);
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+            console.log(hashedPassword);
+
+            let data;
+        
+            let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+            db.promise(sql)
+            .then((res) => {
+                console.log(res);
+                let sql;
+                if (res.length == 0) {
+                    sql = `INSERT INTO users (name, username, password) VALUES ('${req.body.name}', '${req.body.username}', '${hashedPassword}')`;
+                    return db.promise(sql);
+                    
+                } else {
+                    throw 'USERNAME TAKEN';
+                }
+            }).then((res) => {
+                console.log(res.message);
+            }).catch((err) => {
+                console.log(err);
+            });
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
+     
+});
+
+//User login
+app.post(`/login`, jsonParser, async (req, resLogin) => {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 2`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
+    });
+
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.body.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            // validate login fields
+            if (!(req.body.username && req.body.password)) {
+                res.status(400).send("Must input username and password");
+            }
+
+            const hashedPassword = await bcrypt.hash(req.body.password, 10);
+            let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+            db.promise(sql)
+            .then((resProm) => {
+                console.log(resProm[0]);
+                if(resProm[0].length == 0) {
+                    //user does not exist
+                    resLogin.send('user does not exist');
+                } else {
+                    console.log(req.body.password);
+                    console.log(resProm[0].password);
+                    bcrypt.compare(req.body.password, resProm[0].password, function(err, res) {
+                        if (err){
+                        throw err;
+                        }
+                        if (res) {
+                            let accessToken = jwt.sign({
+                                userid: resProm[0].userID,
+                                username: resProm[0].username,
+                                name: resProm[0].name
+                            }, TOKEN_SECRET, {expiresIn: EXPIRY});
+                            
+                            let user = {
+                                userid: resProm[0].userID,
+                                username: resProm[0].username,
+                                name: resProm[0].name
+                            }
+                            resLogin.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+                            resLogin.status(201).send(user);
+                        } else {
+                        // response is OutgoingMessage object that server response http request
+                        return resLogin.json({success: false, message: 'passwords do not match'});
+                        }
+                    });
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err.message);
+    });
+});
+
+//admin
+app.post(`/adminlogin`, jsonParser, async (req, resLogin) => {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 13`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
+    });
+
+    console.log('admin api' + req.body.apikey);
+    const s = `SELECT * FROM apikey WHERE apikey = 'myadminkey'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            // validate login fields
+            if (!(req.body.username && req.body.password)) {
+                res.status(400).send("Must input username and password");
+            }
+
+            if (req.body.username == 'admin' && req.body.password == '123abcAdm1n') {
+                const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                let sql = `SELECT * FROM users WHERE username = '${req.body.username}'`;
+                db.promise(sql)
+                .then((resProm) => {
+                    console.log(resProm[0]);
+                    if(resProm[0].length == 0) {
+                        //user does not exist
+                        resLogin.send('user does not exist');
+                    } else {
+                        console.log(req.body.password);
+                        console.log(resProm[0].password);
+                        bcrypt.compare(req.body.password, resProm[0].password, function(err, res) {
+                            if (err){
+                            throw err;
+                            }
+                            if (res) {
+                                let accessToken = jwt.sign({
+                                    userid: resProm[0].userID,
+                                    username: resProm[0].username,
+                                    name: resProm[0].name
+                                }, TOKEN_SECRET, {expiresIn: EXPIRY});
+                                
+                                let user = {
+                                    userid: resProm[0].userID,
+                                    username: resProm[0].username,
+                                    name: resProm[0].name,
+                                    isAdmin: true
+                                }
+                                //resLogin.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+                                resLogin.status(201).send(user);
+                            } else {
+                            // response is OutgoingMessage object that server response http request
+                            return resLogin.json({success: false, message: 'passwords do not match'});
+                            }
+                        });
+                    }
+                }).catch((err) => {
+                    console.log(err);
+                })
+            };
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
 })
 
-let counterGetUserID = 0;
+
+
+//Get user info by userid
 app.get(`${resource}/user/:userid`, function(req, res) {
-    counterGetUserID++;
-    let userid = req.params.userid;
-    console.log(userid);
-
-    let sql = `SELECT * FROM users WHERE userid=${userid}`;
-    db.query(sql, function(sqlerr, sqlres) {
-        if (sqlerr) throw sqlerr;
-        //console.log(`${sqlres}`);
-        res.status(200).send(JSON.stringify(sqlres));
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 3`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
     });
+
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.body.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            let userid = req.params.userid;
+            console.log(userid);
+
+            let sql = `SELECT * FROM users WHERE userid=${userid}`;
+            db.query(sql, function(sqlerr, sqlres) {
+                if (sqlerr) throw sqlerr;
+                //console.log(`${sqlres}`);
+                res.status(200).send(JSON.stringify(sqlres));
+            });
+        
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
+ 
 });
 
-//get all counters to be viewed in the admin.html page
-app.get( adminURL, function(req, res) {
-    let data = {
-        get: counterGetUserID,
-        post: counterPostUser
-    };
-    console.log(data.get);
-    res.status(200).send(JSON.stringify(data));
-});
+
 
 //Get 2 random cat images 
-app.get(catURL, async function(req, res) {
-    const result1 = await axios.get(catAPI);
-    const result2 = await axios.get(catAPI);
-    let data = { 
-        picture1ID: result1.data.id,
-        picture1URL: result1.data.webpurl,
-        picture2ID: result2.data.id,
-        picture2URL: result2.data.webpurl
-    };
+app.get(catURL + '/:apikey', async function(req, res) {
 
-    let sql = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
-    let sql2 = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
-
-    db.query(sql, function(err, result) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 4`
+    db.query(sqlTrack, function(err, result) {
         if (err) {
             res.status(404).send("Error: " + err.message);
             throw err;
+        } else {
+            //res.status(201).send("Success");
         }
-        console.log("picture 1 inserted");
+        console.log("1 stat updated");
     });
 
-    db.query(sql2, function(err, result) {
-        if (err) {
-            res.status(404).send("Error: " + err.message);
-            throw err;
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            const result1 = await axios.get(catAPI);
+            const result2 = await axios.get(catAPI);
+            let data = { 
+                picture1ID: result1.data.id,
+                picture1URL: result1.data.webpurl,
+                picture2ID: result2.data.id,
+                picture2URL: result2.data.webpurl
+            };
+
+            let sql = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result1.data.id}, '${result1.data.webpurl}')`;
+            let sql2 = `INSERT IGNORE INTO picture(pictureID, url) VALUES (${result2.data.id}, '${result2.data.webpurl}')`;
+
+            db.query(sql, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                    throw err;
+                }
+                console.log("picture 1 inserted");
+            });
+
+            db.query(sql2, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                    throw err;
+                }
+                console.log("picture 2 inserted");
+            });
+            res.status(200).send(JSON.stringify(data));
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
         }
-        console.log("picture 2 inserted");
-    });
-    res.status(200).send(JSON.stringify(data));
-})
-
-//Get cat info by id
-app.get(catURL + '/:pictureid', function(req, res) {
-    let sql = 'SELECT * FROM comments AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.userID=u.userID'
-    + ` WHERE c.pictureID=${req.params.pictureid}`;
-    db.query(sql, function(sqlerr, sqlres) {
-        if (sqlerr) throw sqlerr;
-        console.log(`${sqlres}`);
-        res.status(200).send(JSON.stringify(sqlres));
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
     });
 })
-
-let counterPostUser = 0;
-app.post(`${resource}/user`, function(req, res) {
-        counterPostUser++;
-
-        console.log(req.body);
-        console.log(req.body.name);
         
-        let newUser = {
-            name: req.body.name,
-            username: req.body.username,
-            password: req.body.password
+//Get cat info by id
+app.get(catURL + '/:pictureid/:apikey', function(req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 5`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
         }
+        console.log("1 stat updated");
+    });
 
-        let sql = `INSERT INTO users(userID, name, username,password) VALUES (DEFAULT, '${newUser.name}', '${newUser.username}', '${newUser.password}')`;
-        db.query(sql, function(err, result) {
-            if (err) {
-                res.status(404).send("Error: " + err.message);
-                throw err;
-            } else {
-                res.status(201).send(JSON.stringify(newUser));
-            }
-            console.log("1 record inserted");
-        });
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            let sql = 'SELECT * FROM comments AS c JOIN votes v ON c.pictureID=v.pictureID JOIN picture as p ON c.pictureID=p.pictureID JOIN users as u ON c.userID=u.userID'
+            + ` WHERE c.pictureID=${req.params.pictureid}`;
+            db.query(sql, function(sqlerr, sqlres) {
+                if (sqlerr) throw sqlerr;
+                console.log(`${sqlres}`);
+                res.status(200).send(JSON.stringify(sqlres));
+            });
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
+
+})
+
+//Getting leaderboard of cats
+app.get(`${resource}/leaderboard/:top/:apikey`, function (req, res) {
+
+    console.log(req.params);
+
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 7`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
+    });
+
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+
+            console.log(req.params.top);
+            let top = req.params.top;
+
+            let sql = `SELECT * FROM votes JOIN picture ON picture.pictureID = votes.pictureID ORDER BY votes DESC LIMIT ${top}` ;
+            db.query(sql, function(sqlerr, sqlres) {
+                if (sqlerr) throw sqlerr;
+                //console.log(`${sqlres}`);
+                res.status(200).send(JSON.stringify(sqlres));
+            });
+
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
+
+    
 });
 
-app.get(`${resource}/leaderboard/:top`, function (req, res) {
-    let top = req.params.top;
-    console.log(top);
-
-    let sql = `SELECT * FROM votes JOIN picture ON picture.pictureID = votes.pictureID ORDER BY votes DESC LIMIT ${top}` ;
-    db.query(sql, function(sqlerr, sqlres) {
-        if (sqlerr) throw sqlerr;
-        //console.log(`${sqlres}`);
-        res.status(200).send(JSON.stringify(sqlres));
+//Getting comments by userid
+app.get(`${catURL}/comments/user/:userid/:apikey`, function (req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 9`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
     });
-});
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
 
-app.get(`${catURL}/comments/:pictureid`, function (req, res) {
-    let pictureid = req.params.pictureid;
-    console.log(pictureid);
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
 
-    let sql = `SELECT * FROM comments WHERE pictureID=${pictureid}`;
-    db.query(sql, function(sqlerr, sqlres) {
-        if (sqlerr) throw sqlerr;
-        //console.log(`${sqlres}`);
-        res.status(200).send(JSON.stringify(sqlres));
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            let sql = `SELECT * FROM comments WHERE userID=${req.params.userid}`;
+
+            //console.log(req.params.userid);
+            db.query(sql, function(sqlerr, sqlres) {
+                if (sqlerr) throw sqlerr;
+                //console.log(`${sqlres}`);
+                res.status(200).send(JSON.stringify(sqlres));
+            });  
+        } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
     });
-});
 
-app.get(`${catURL}/comments/user/:userid`, function (req, res) {
-    let sql = `SELECT * FROM comments WHERE userID=${req.params.userid}`;
-
-    //console.log(req.params.userid);
-    db.query(sql, function(sqlerr, sqlres) {
-        if (sqlerr) throw sqlerr;
-        //console.log(`${sqlres}`);
-        console.log("pls" + sqlres);
-        res.status(200).send(JSON.stringify(sqlres));
-    });
 });
 
 //Posting comments
 app.post(catURL + `/comments/:pictureid/`, jsonParser, function(req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 10`
+    db.query(sqlTrack, function(err, result) {
+        if (err) {
+            res.status(404).send("Error: " + err.message);
+            throw err;
+        } else {
+            //res.status(201).send("Success");
+        }
+        console.log("1 stat updated");
+    });
     console.log("postcomment", req.body);
     console.log(req.body.comment);
     console.log(req.body.userID);
     
-    let newComment = {
-        userID: req.body.userID,
-        pictureID: req.params.pictureID,
-        comment: req.body.comment
-    }
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.body.apikey}'`;
 
-    let sql = `INSERT INTO comments(commentID, userID, pictureID, comment) VALUES (DEFAULT, ${req.body.userID} , ${req.body.pictureID}, "${req.body.comment}" )`;
-    db.query(sql, function(err, result) {
-        if (err) {
-            res.status(404).send("Error: " + err.message);
-            throw err;
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            let newComment = {
+                userID: req.body.userID,
+                pictureID: req.params.pictureID,
+                comment: req.body.comment
+            }
+        
+            let sql = `INSERT INTO comments(commentID, userID, pictureID, comment) VALUES (DEFAULT, ${req.body.userID} , ${req.body.pictureID}, "${req.body.comment}" )`;
+            db.query(sql, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                    throw err;
+                } else {
+                    res.status(201).send(JSON.stringify(newComment));
+                }
+                console.log("1 record inserted");
+            });
+            
+
         } else {
-            res.status(201).send(JSON.stringify(newComment));
+            throw `401 Unauthorized! Wrong APIKey`;
         }
-        console.log("1 record inserted");
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
     });
+    
 });
 
-app.put(`${catURL}/comments/:commentid/`, jsonParser, function(req, res) {
-    console.log(req.body.comment);
-    console.log(req.params.commentid);
-
-    let newComment = {
-        commentID: req.params.commentid,
-        comment: req.body.comment
-    }
-
-    let sql = `UPDATE comments SET comment='${req.body.comment}' WHERE commentID=${req.params.commentid}`;
-    db.query(sql, function(err, result) {
+//Deleting comments
+app.delete(`${catURL}/comments/delete/:commentid/:apikey`, jsonParser, function(req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 11`
+    db.query(sqlTrack, function(err, result) {
         if (err) {
             res.status(404).send("Error: " + err.message);
             throw err;
         } else {
-            res.status(201).send(JSON.stringify(newComment));
+            //res.status(201).send("Success");
         }
-        console.log("1 record updated");
+        console.log("1 stat updated");
     });
-});
 
-app.delete(`${catURL}/comments/delete/:commentid/`, jsonParser, function(req, res) {
-    console.log(req.params.commentid);
+    console.log('delete cid', req.params.commentid);
 
-    let newComment = {
-        deletedCommentID: req.params.commentid,
-    }
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
 
-    let sql = `DELETE FROM comments WHERE commentID = ${req.params.commentid}`;
-    db.query(sql, function(err, result) {
-        if (err) {
-            res.status(404).send("Error: " + err.message);
-            throw err;
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            let newComment = {
+                deletedCommentID: req.params.commentid,
+            }
+        
+            let sql = `DELETE FROM comments WHERE commentID = ${req.params.commentid}`;
+            db.query(sql, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                    throw err;
+                } else {
+                    res.status(201).send(JSON.stringify(newComment));
+                }
+                console.log("1 record delete");
+            });
+        
         } else {
-            res.status(201).send(JSON.stringify(newComment));
+            throw `401 Unauthorized! Wrong APIKey`;
         }
-        console.log("1 record delete");
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
     });
+
+
 });
 
 //vote for cat by id
-app.put(`${catURL}/vote/:pictureid`, jsonParser, function(req, res) {
-    let sql = `UPDATE votes SET votes = votes + 1 WHERE pictureid = ${req.params.pictureid}`
-
-    db.query(sql, function(err, result) {
+app.put(`${catURL}/vote/:pictureid/:apikey`, jsonParser, function(req, res) {
+    let sqlTrack = `UPDATE resource SET stat = stat + 1 WHERE resourceid = 12`
+    db.query(sqlTrack, function(err, result) {
         if (err) {
             res.status(404).send("Error: " + err.message);
             throw err;
         } else {
-            res.status(201).send("Success");
+            //res.status(201).send("Success");
         }
-        console.log("1 record updated");
+        console.log("1 stat updated");
     });
+
+    const s = `SELECT * FROM apikey WHERE apikey = '${req.params.apikey}'`;
+
+    db.promise(s)
+    .then(async (apiResult) => {
+        console.log("api result" + apiResult);
+        let sql;
+
+        console.log("res.length" + apiResult.length);
+        if (apiResult.length > 0) {
+            // user has apikey
+            let sql = `INSERT INTO votes (pictureID, votes) VALUES (${req.params.pictureid}, 1) ON DUPLICATE KEY UPDATE votes = votes + 1;`;
+
+            db.query(sql, function(err, result) {
+                if (err) {
+                    res.status(404).send("Error: " + err.message);
+                throw err;
+                } else {
+                res.status(201).send("Success");
+                }
+                console.log("1 record updated");
+            });
+    } else {
+            throw `401 Unauthorized! Wrong APIKey`;
+        }
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log("api key errors" + err);
+    });
+    
+    
 })
 
 app.listen(PORT, () => {

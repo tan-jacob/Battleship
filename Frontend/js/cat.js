@@ -14,7 +14,12 @@ const id = urlParams.get('id')
 
 //UserName : Comments
 let getOneCat = async () =>  {
-    const response = await axios.get(localEndPointRoot + catURL + "/" + id);
+
+    // comments
+    let url1 = localEndPointRoot + catURL + "/" + id + '/catorcatappapikey';
+    const response = await axios.get(url1);
+    
+    // images
     const response2 = await axios.get(catAPI + id);
 
     console.log(response.data);
@@ -41,7 +46,8 @@ let postComment = async () => {
             let data = {
                 comment : document.getElementById("comment").value,
                 pictureID : id,
-                userID : userInfo.userid
+                userID : userInfo.userid,
+                apikey: 'catorcatappapikey'
         }
         const response = await axios({
             method: 'POST',

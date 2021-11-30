@@ -15,6 +15,7 @@ let login = async () => {
     axios.post(url, {
         username: un,
         password: pw,
+        apikey: 'catorcatappapikey'
     }, {
         withCredentials: true
     }).then(res => {
@@ -27,6 +28,7 @@ let login = async () => {
         console.log(error);
     });
     console.log(JSON.parse(getCookieValue('cookie1')));
+    alert("Logged in!");
 };
 
     
